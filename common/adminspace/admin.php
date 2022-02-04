@@ -1,7 +1,10 @@
 <?php
 session_start();
 if (!isset($_SESSION["username"])){
-    header("Location: ../error.php");
+    if (!$_SESSION["admin"]){
+        header("Location: ../error.php");
+    }
+
 }
 ?>
 <!DOCTYPE html>
@@ -67,6 +70,7 @@ if (!isset($_SESSION["username"])){
     </div><!-- /.container-fluid -->
 </nav>
 <div class="well text-center"><h1>List of all Users</h1></div>
+<div class="container">
 <table class="table table-hover">
     <thead>
     <tr>
@@ -129,8 +133,8 @@ if (!isset($_SESSION["username"])){
         <td>$categories</td>
         <td>$admin</td>  
         <form action='' method='post'>
-        <td><a class='btn btn-info'role='button' href='../backend.php?edit=$id'> <div class='postDelete'>Edit</div></a></td>
-        <td><a class='btn btn-danger 'role='button' href='../backend.php?deleteuser=$id'> <div class='postDelete'>Delete</div></a></td>
+        <td><a class='btn btn-info'role='button' href='edituser.php?edituser=$id'> <div>Edit</div></a></td>
+        <td><a class='btn btn-danger 'role='button' href='../backend.php?deleteuser=$id'> <div>Delete</div></a></td>
         </form>
         </tr>
         
@@ -145,6 +149,7 @@ if (!isset($_SESSION["username"])){
 
     </tbody>
 </table>
+</div>
 
 </body>
 </html>

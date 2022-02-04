@@ -2,7 +2,10 @@
 session_start();
 if (!isset($_SESSION["username"])){
     header("Location: ../error.php");
+}
 
+if(isset($_GET['edituser'])) {
+    $id = $_GET["edituser"];
 }
 
 //verbindung zur Datenbank Auslagern
@@ -86,14 +89,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if(empty($error)){
         //firstname, lastname, username, password, email
-        $query = "Insert into user (firstname, lastname, username, password, admin, categories) values (?,?,?,?,?,?)";
+        $query = "UPDATE user SET firstname = ?,lastname = ?,username = ?, password = ?, categories = ? WHERE id = ?";
         // query vorbereiten
         $stmt = $mysqli->prepare($query);
         if($stmt===false){
             $error .= 'prepare() failed '. $mysqli->error . '<br />';
         }
         // parameter an query binden
-        if(!$stmt->bind_param('ssssss', $firstname, $lastname, $username, $password, $admin, $categroie)){
+        if(!$stmt->bind_param('ssssss', $firstname, $lastname, $username, $password, $categroie,$id)){
             $error .= 'bind_param() failed '. $mysqli->error . '<br />';
         }
 
@@ -174,71 +177,71 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="well text-center"><h1>Create a new User</h1></div>
+<div class="well text-center"><h1>Edit the User</h1></div>
 <div class="container">
-    <?php
-    // Ausgabe der Fehlermeldungen
-    if(!empty($error)){
-        echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
-    } else if (!empty($message)){
-        echo "<div class=\"alert alert-success\" role=\"alert\">" . $message . "</div>";
-    }
-    ?>
-    <form action="" method="post">
-        <!-- vorname -->
-        <div class="form-group">
-            <label for="firstname">firstname *</label>
-            <input type="text" name="firstname" class="form-control" id="firstname"
-                   value="<?php echo $firstname ?>"
-                   placeholder="Geben Sie Ihren Vornamen an."
-                   required="true">
-        </div>
-        <!-- nachname -->
-        <div class="form-group">
-            <label for="lastname">lastname *</label>
-            <input type="text" name="lastname" class="form-control" id="lastname"
-                   value="<?php echo $lastname ?>"
-                   placeholder="Geben Sie Ihren Nachnamen an"
-                   maxlength="30"
-                   required="true">
-        </div>
-        <!-- benutzername -->
-        <div class="form-group">
-            <label for="username">Benutzername *</label>
-            <input type="text" name="username" class="form-control" id="username"
-                   value="<?php echo $username ?>"
-                   placeholder="Gross- und Keinbuchstaben, min 6 Zeichen."
-                   maxlength="30" required="true"
-                   pattern="(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}"
-                   title="Gross- und Keinbuchstaben, min 6 Zeichen.">
-        </div>
-        <!-- password -->
-        <div class="form-group">
-            <label for="password">Password *</label>
-            <input type="password" name="password" class="form-control" id="password"
-                   placeholder="Gross- und Kleinbuchstaben, Zahlen, Sonderzeichen, min. 8 Zeichen, keine Umlaute"
-                   pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-                   title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute."
-                   required="true">
-        </div>
-        <div class="form-group">
-            <label for="cars">Choose a categorie:</label>
-            <select name='categorie'>
+<?php
+// Ausgabe der Fehlermeldungen
+if(!empty($error)){
+    echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
+} else if (!empty($message)){
+    echo "<div class=\"alert alert-success\" role=\"alert\">" . $message . "</div>";
+}
+?>
+<form action="" method="post">
+    <!-- vorname -->
+    <div class="form-group">
+        <label for="firstname">firstname *</label>
+        <input type="text" name="firstname" class="form-control" id="firstname"
+               value="<?php echo $firstname ?>"
+               placeholder="Geben Sie Ihren Vornamen an."
+               required="true">
+    </div>
+    <!-- nachname -->
+    <div class="form-group">
+        <label for="lastname">lastname *</label>
+        <input type="text" name="lastname" class="form-control" id="lastname"
+               value="<?php echo $lastname ?>"
+               placeholder="Geben Sie Ihren Nachnamen an"
+               maxlength="30"
+               required="true">
+    </div>
+    <!-- benutzername -->
+    <div class="form-group">
+        <label for="username">Benutzername *</label>
+        <input type="text" name="username" class="form-control" id="username"
+               value="<?php echo $username ?>"
+               placeholder="Gross- und Keinbuchstaben, min 6 Zeichen."
+               maxlength="30" required="true"
+               pattern="(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}"
+               title="Gross- und Keinbuchstaben, min 6 Zeichen.">
+    </div>
+    <!-- password -->
+    <div class="form-group">
+        <label for="password">Password *</label>
+        <input type="password" name="password" class="form-control" id="password"
+               placeholder="Gross- und Kleinbuchstaben, Zahlen, Sonderzeichen, min. 8 Zeichen, keine Umlaute"
+               pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
+               title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute."
+               required="true">
+    </div>
+    <div class="form-group">
+        <label for="cars">Choose a categorie:</label>
+        <select name='categorie'>
             <?php
-                include "../backend.php";
+            include "../backend.php";
 
-                foreach (getcategroies() as $categroie){
-                    $categroie = $categroie["name"];
-                    echo "<option value='$categroie'>$categroie</option>";
-                }
+            foreach (getcategroies() as $categroie){
+                $categroie = $categroie["name"];
+                echo "<option value='$categroie'>$categroie</option>";
+            }
             ?>
-            </select>
-        </div>
+        </select>
+    </div>
 
 
-        <button type="submit" name="button" value="submit" class="btn btn-info">Senden</button>
-        <button type="reset" name="button" value="reset" class="btn btn-warning">Löschen</button>
-    </form>
+    <button type="submit" name="button" value="submit" class="btn btn-info">Senden</button>
+    <button type="reset" name="button" value="reset" class="btn btn-warning">Löschen</button>
+</form>
 </div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

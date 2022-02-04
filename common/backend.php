@@ -45,14 +45,29 @@ function redirect($url)
     exit();
 }
 
+function getcategroies(){
+    $host = 'localhost';
+    $database = 'db_m151_modularbeit';
+    $username = 'root';
+    $password = '';
+    $mysqli = new mysqli($host, $username, $password, $database);
+    if ($mysqli->connect_error) {
+        die('Connect Error (' . $mysqli->connect_error . ') '. $mysqli->connect_error);
+    }
+
+    $query = 'SELECT name from categories';
+    $result = $mysqli->query($query);
+
+    return $result;
+}
+
+
+
 if (isset($_GET["deleteuser"])){
     deleteuser($_GET["deleteuser"]);
     redirect("adminspace/admin.php");
 }
-if (isset($_GET["edituser"])){
-    edituser($_GET["edituser"]);
-    redirect("adminspace/admin.php");
-}
+
 function deleteuser($id){
     $host = 'localhost';
     $database = 'db_m151_modularbeit';
@@ -68,6 +83,3 @@ function deleteuser($id){
     $stmt->execute();
 }
 
-function edituser($id){
-
-}
