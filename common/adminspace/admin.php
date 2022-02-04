@@ -1,7 +1,8 @@
 <?php
 session_start();
-
-
+if (!isset($_SESSION["username"])){
+    header("Location: ../error.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -45,11 +46,11 @@ session_start();
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left">
+            <form class="navbar-form navbar-left" method="post" action="">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" class="form-control" placeholder="Search" name="search">
                 </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" class="btn btn-default" name="searchsub">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -65,8 +66,8 @@ session_start();
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-
-<table class="table">
+<div class="well text-center"><h1>List of all Users</h1></div>
+<table class="table table-hover">
     <thead>
     <tr>
         <th scope="col">#</th>
@@ -79,19 +80,39 @@ session_start();
     </thead>
     <tbody>
     <?php
-    $host = 'localhost';
-    $database = 'db_m151_modularbeit';
-    $username = 'root';
-    $password = '';
-    $mysqli = new mysqli($host, $username, $password, $database);
-    if ($mysqli->connect_error) {
-        die('Connect Error (' . $mysqli->connect_error . ') '. $mysqli->connect_error);
-    }
-    $id = $_SESSION["id"];
-    $query = 'SELECT * from user';
-    $result = $mysqli->query($query);
+    include "../backend.php";
+
+    $result = selectall();
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
+            if(isset($_POST['searchsub'])) {
+                if (!empty($_POST["search"])) {
+                    $username = trim($_POST['search']);
+                    $srow = searchuser($username);
+                    if (!empty($srow)) {
+                        $id = $srow["id"];
+                        $firstname = $srow["firstname"];
+                        $lastname = $srow["lastname"];
+                        $admin = $srow["admin"];
+                        $categories = $srow["categories"];
+                        $username = $srow["username"];
+                        echo "
+                <tr>
+                 <th scope='row'>$id</th>
+                 <td>$username</td>
+                <td>$firstname</td>
+                 <td>$lastname</td>
+                <td>$categories</td>
+                <td>$admin</td> 
+                <td><a class='btn btn-info'role='button' href='../backend.php?edit=$id'> <div class='postDelete'>Edit</div></a></td>
+                <td><a class='btn btn-danger 'role='button' href='../backend.php?deleteuser=$id'> <div class='postDelete'>Delete</div></a></td>
+
+        </tr> ";
+
+                        break;
+                    }
+                }
+            }
             $id = $row["id"];
             $firstname = $row["firstname"];
             $lastname = $row["lastname"];
@@ -99,6 +120,7 @@ session_start();
             $categories = $row["categories"];
             $username = $row["username"];
             echo "
+
         <tr>
         <th scope='row'>$id</th>
         <td>$username</td>
@@ -106,46 +128,23 @@ session_start();
         <td>$lastname</td>
         <td>$categories</td>
         <td>$admin</td>  
-        <td><button type='button' name='button' value='submit' class='btn btn-info btn-lg' data-toggle='modal' data-target='#myModal'>edit</button></td>
-        <td><button type='button' name='button' value='submit' class='btn btn-info btn-lg' data-toggle='modal' data-target='#myModal'>delete</button></td>
-
-        </tr>";}
+        <form action='' method='post'>
+        <td><a class='btn btn-info'role='button' href='../backend.php?edit=$id'> <div class='postDelete'>Edit</div></a></td>
+        <td><a class='btn btn-danger 'role='button' href='../backend.php?deleteuser=$id'> <div class='postDelete'>Delete</div></a></td>
+        </form>
+        </tr>
+        
+        
+        
+     ";}
     } else {
         echo "0 results";
     }
-    $mysqli->close();
+
     ?>
 
     </tbody>
 </table>
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">edit user</h4>
-            </div>
-            <div class="modal-body">
-                <form action="" method ="post">
-                    <div class="form-group">
-                        <label for="password">new password</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd">confirm password</label>
-                        <input type="password" class="form-control" id="pwd" name="pwd">
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
 </body>
 </html>

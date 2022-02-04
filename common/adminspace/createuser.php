@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!isset($_SESSION["username"])){
+    header("Location: ../error.php");
+}
 
 //verbindung zur Datenbank Auslagern
 $host = 'localhost';
@@ -70,12 +73,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         // Ausgabe Fehlermeldung
         $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
     }
-    // admin check
-    if(isset($_POST['admin']) && !empty($_POST['admin'])){
-        $admin = true;
-    } else {
-        $admin = false;
-    }
+
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if(empty($error)){
         //firstname, lastname, username, password, email
@@ -220,11 +218,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                    title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute."
                    required="true">
         </div>
-        <!-- admin -->
-        <div class="form-group">
-            <label for="checkbox">Admin</label>
-            <input type="checkbox" aria-label="...">
-        </div>
+
+
         <button type="submit" name="button" value="submit" class="btn btn-info">Senden</button>
         <button type="reset" name="button" value="reset" class="btn btn-warning">Löschen</button>
     </form>
