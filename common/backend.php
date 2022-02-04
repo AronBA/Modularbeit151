@@ -28,7 +28,10 @@ function searchuser($user){
         die('Connect Error (' . $mysqli->connect_error . ') '. $mysqli->connect_error);
     }
 
-    $query = 'SELECT * from user where username = ?';
+        $query = 'SELECT * from user where username = ?';
+
+
+
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("s", $user );
     $stmt->execute();

@@ -1,11 +1,38 @@
 <?php
 session_start();
+
 if (!isset($_SESSION["username"])){
     header("Location: ../error.php");
 }
 
-if(isset($_GET['edituser'])) {
+if(isset($_GET["edituser"])) {
+
     $id = $_GET["edituser"];
+    $host = 'localhost';
+    $database = 'db_m151_modularbeit';
+    $username = 'root';
+    $password = '';
+    $mysqli = new mysqli($host, $username, $password, $database);
+    if ($mysqli->connect_error) {
+        die('Connect Error (' . $mysqli->connect_error . ') ' . $mysqli->connect_error);
+    }
+    $query = 'SELECT * from user where id = ?';
+
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+
+        $ofirstname = $row["firstname"];
+        $olastname = $row["lastname"];
+        $ocategories = $row["categories"];
+        $ousername = $row["username"];
+
+    }
 }
 
 //verbindung zur Datenbank Auslagern
@@ -192,15 +219,14 @@ if(!empty($error)){
     <div class="form-group">
         <label for="firstname">firstname *</label>
         <input type="text" name="firstname" class="form-control" id="firstname"
-               value="<?php echo $firstname ?>"
-               placeholder="Geben Sie Ihren Vornamen an."
+               value="<?php echo "$ofirstname" ;?>"
                required="true">
     </div>
     <!-- nachname -->
     <div class="form-group">
         <label for="lastname">lastname *</label>
         <input type="text" name="lastname" class="form-control" id="lastname"
-               value="<?php echo $lastname ?>"
+               value="<?php echo $olastname ?>"
                placeholder="Geben Sie Ihren Nachnamen an"
                maxlength="30"
                required="true">
@@ -209,7 +235,7 @@ if(!empty($error)){
     <div class="form-group">
         <label for="username">Benutzername *</label>
         <input type="text" name="username" class="form-control" id="username"
-               value="<?php echo $username ?>"
+               value="<?php echo $ousername ?>"
                placeholder="Gross- und Keinbuchstaben, min 6 Zeichen."
                maxlength="30" required="true"
                pattern="(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}"
