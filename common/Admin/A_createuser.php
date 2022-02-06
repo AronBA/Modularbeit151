@@ -103,7 +103,7 @@ require_once "../Backend/DB/DB_createuser.php";
             <label>Choose a categorie:</label>
             <select name='categorie'>
                         <?php
-                        include "../Backend/DB/functions.php";
+                        include "../Backend/DB/DB_getcategories.php";
                         foreach ($categories as $category) {
                             $category = $category["name"]?>
                             <option value="<?=$category?>"><?=$category?></option>

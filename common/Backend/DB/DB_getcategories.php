@@ -1,6 +1,6 @@
 <?php
 $categories = getcategroies();
-
+require_once "DB_connection.php";
 function getcategroies(){
     $host = 'localhost';
     $database = 'db_m151_modularbeit';
