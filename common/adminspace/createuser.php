@@ -1,120 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION["username"])){
-    header("Location: ../error.php");
-
-}
-
-//verbindung zur Datenbank Auslagern
-$host = 'localhost';
-$database = 'db_m151_modularbeit';
-$username = 'root';
-$password = '';
-
-// mit datenbank verbinden
-$mysqli = new mysqli($host, $username, $password, $database);
-
-// fehlermeldung, falls die Verbindung fehl schlägt.
-if ($mysqli->connect_error) {
-    die('Connect Error (' . $mysqli->connect_error . ') '. $mysqli->connect_error);
-}
-
-// Initialisierung
-$error = $message =  '';
-$firstname = $lastname = $admin = $username = '';
-
-// Wurden Daten mit "POST" gesendet?
-if($_SERVER['REQUEST_METHOD'] == "POST"){
-    // Ausgabe des gesamten $_POST Arrays
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-
-    // vorname vorhanden, mindestens 1 Zeichen und maximal 30 Zeichen lang
-    if(isset($_POST['firstname']) && !empty(trim($_POST['firstname'])) && strlen(trim($_POST['firstname'])) <= 30){
-        // Spezielle Zeichen Escapen > Script Injection verhindern
-        $firstname = htmlspecialchars(trim($_POST['firstname']));
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
-    }
-
-    // select
-    if(isset($_POST['categorie'])){
-        $categroie = htmlspecialchars(trim($_POST['categorie']));
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Select an.<br />";
-    }
-
-    // nachname vorhanden, mindestens 1 Zeichen und maximal 30 zeichen lang
-    if(isset($_POST['lastname']) && !empty(trim($_POST['lastname'])) && strlen(trim($_POST['lastname'])) <= 30){
-        // Spezielle Zeichen Escapen > Script Injection verhindern
-        $lastname = htmlspecialchars(trim($_POST['lastname']));
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
-    }
-
-    // benutzername vorhanden, mindestens 6 Zeichen und maximal 30 zeichen lang
-    if(isset($_POST['username']) && !empty(trim($_POST['username'])) && strlen(trim($_POST['username'])) <= 30){
-        $username = trim($_POST['username']);
-        // entspricht der benutzername unseren vogaben (minimal 6 Zeichen, Gross- und Kleinbuchstaben)
-        if(!preg_match("/(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}/", $username)){
-            $error .= "Der Benutzername entspricht nicht dem geforderten Format.<br />";
-        }
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Benutzernamen ein.<br />";
-    }
-
-
-    // passwort vorhanden, mindestens 8 Zeichen
-    if(isset($_POST['password']) && !empty(trim($_POST['password']))){
-        $password = trim($_POST['password']);
-        $password = password_hash($password, PASSWORD_ARGON2I);
-
-        //entspricht das passwort unseren vorgaben? (minimal 8 Zeichen, Zahlen, Buchstaben, keine Zeilenumbrüche, mindestens ein Gross- und ein Kleinbuchstabe)
-        if(!preg_match("/(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/", $password)){
-            $error .= "Das Passwort entspricht nicht dem geforderten Format.<br />";
-        }
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
-    }
-
-    // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
-    if(empty($error)){
-        //firstname, lastname, username, password, email
-        $query = "Insert into user (firstname, lastname, username, password, admin, categories) values (?,?,?,?,?,?)";
-        // query vorbereiten
-        $stmt = $mysqli->prepare($query);
-        if($stmt===false){
-            $error .= 'prepare() failed '. $mysqli->error . '<br />';
-        }
-        // parameter an query binden
-        if(!$stmt->bind_param('ssssss', $firstname, $lastname, $username, $password, $admin, $categroie)){
-            $error .= 'bind_param() failed '. $mysqli->error . '<br />';
-        }
-
-        // query ausführen
-        if(!$stmt->execute()){
-            $error .= 'execute() failed '. $mysqli->error . '<br />';
-        }
-        // kein Fehler!
-        if(empty($error)){
-            $message .= "Die Daten wurden erfolgreich in die Datenbank geschrieben<br/ >";
-            // felder leeren > oder weiterleitung auf anderes script: z.B. Login!
-            $username = $password = $firstname = $lastname = $admin =  '';
-            // verbindung schliessen
-            $mysqli->close();
-
-            // weiterleiten auf login formular
-            header('Location: admin.php');
-        }
-
-    }
-}
+require_once "../backend/session.php";
+require_once "../backend/dbaccess/createuser.php";
 
 ?>
 
@@ -176,20 +62,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 </nav>
 <div class="well text-center"><h1>Create a new User</h1></div>
 <div class="container">
-    <?php
-    // Ausgabe der Fehlermeldungen
-    if(!empty($error)){
-        echo "<div class=\"alert alert-danger\" role=\"alert\">" . $error . "</div>";
-    } else if (!empty($message)){
-        echo "<div class=\"alert alert-success\" role=\"alert\">" . $message . "</div>";
-    }
-    ?>
-    <form action="" method="post">
+    <form action="../backend/dbaccess/createuser.php" method="post">
         <!-- vorname -->
         <div class="form-group">
             <label for="firstname">firstname *</label>
             <input type="text" name="firstname" class="form-control" id="firstname"
-                   value="<?php echo $firstname ?>"
+
                    placeholder="Geben Sie Ihren Vornamen an."
                    required="true">
         </div>
@@ -197,7 +75,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         <div class="form-group">
             <label for="lastname">lastname *</label>
             <input type="text" name="lastname" class="form-control" id="lastname"
-                   value="<?php echo $lastname ?>"
+
                    placeholder="Geben Sie Ihren Nachnamen an"
                    maxlength="30"
                    required="true">
@@ -206,7 +84,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         <div class="form-group">
             <label for="username">Benutzername *</label>
             <input type="text" name="username" class="form-control" id="username"
-                   value="<?php echo $username ?>"
+
                    placeholder="Gross- und Keinbuchstaben, min 6 Zeichen."
                    maxlength="30" required="true"
                    pattern="(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}"
@@ -222,10 +100,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                    required="true">
         </div>
         <div class="form-group">
-            <label for="cars">Choose a categorie:</label>
+            <label>Choose a categorie:</label>
             <select name='categorie'>
             <?php
-                include "../backend.php";
+                include "../backend/dbaccess/functions.php";
 
                 foreach (getcategroies() as $categroie){
                     $categroie = $categroie["name"];

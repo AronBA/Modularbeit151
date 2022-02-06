@@ -1,11 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION["username"])){
-    if (!$_SESSION["admin"]){
-        header("Location: ../error.php");
-    }
-
-}
+require_once "../backend/session.php";
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -49,7 +43,7 @@ if (!isset($_SESSION["username"])){
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left" method="post" action="">
+            <form class="navbar-form navbar-left" method="post" action="../backend/dbaccess/displayuser.php">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Search" name="search">
                 </div>
@@ -59,9 +53,9 @@ if (!isset($_SESSION["username"])){
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION["firstname"]." ". $_SESSION["lastname"]?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><?php echo $_SESSION["username"]; ?></a></li>
-                        <li><a href="../logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
-                        <li><a href="../logout.php"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
+                        <li><?php echo $_SESSION["username"]; ?></li>
+                        <li><a href="../backend/logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
+                        <li><a href="../backend/logout.php"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
 
                     </ul>
                 </li>
@@ -84,67 +78,7 @@ if (!isset($_SESSION["username"])){
     </thead>
     <tbody>
     <?php
-    include "../backend.php";
-
-    $result = selectall();
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            if(isset($_POST['searchsub'])) {
-                if (!empty($_POST["search"])) {
-                    $username = trim($_POST['search']);
-                    $srow = searchuser($username);
-                    if (!empty($srow)) {
-                        $id = $srow["id"];
-                        $firstname = $srow["firstname"];
-                        $lastname = $srow["lastname"];
-                        $admin = $srow["admin"];
-                        $categories = $srow["categories"];
-                        $username = $srow["username"];
-                        echo "
-                <tr>
-                 <th scope='row'>$id</th>
-                 <td>$username</td>
-                <td>$firstname</td>
-                 <td>$lastname</td>
-                <td>$categories</td>
-                <td>$admin</td> 
-                <td><a class='btn btn-info'role='button' href='../backend.php?edit=$id'> <div class='postDelete'>Edit</div></a></td>
-                <td><a class='btn btn-danger 'role='button' href='../backend.php?deleteuser=$id'> <div class='postDelete'>Delete</div></a></td>
-
-        </tr> ";
-
-                        break;
-                    }
-                }
-            }
-            $id = $row["id"];
-            $firstname = $row["firstname"];
-            $lastname = $row["lastname"];
-            $admin = $row["admin"];
-            $categories = $row["categories"];
-            $username = $row["username"];
-            echo "
-
-        <tr>
-        <th scope='row'>$id</th>
-        <td>$username</td>
-        <td>$firstname</td>
-        <td>$lastname</td>
-        <td>$categories</td>
-        <td>$admin</td>  
-        <form action='' method='post'>
-        <td><a class='btn btn-info'role='button' href='edituser.php?edituser=$id'> <div>Edit</div></a></td>
-        <td><a class='btn btn-danger 'role='button' href='../backend.php?deleteuser=$id'> <div>Delete</div></a></td>
-        </form>
-        </tr>
-        
-        
-        
-     ";}
-    } else {
-        echo "0 results";
-    }
-
+    require_once "../backend/dbaccess/displayuser.php";
     ?>
 
     </tbody>
