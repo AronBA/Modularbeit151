@@ -1,5 +1,5 @@
 <?php
-include "dbconfig.php";
+include "DB_config.php";
 
 $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 

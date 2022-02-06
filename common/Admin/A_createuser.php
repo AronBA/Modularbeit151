@@ -1,6 +1,6 @@
 <?php
-require_once "../backend/session.php";
-require_once "../backend/dbaccess/createuser.php";
+require_once "../Backend/B_session.php";
+require_once "../Backend/DB/DB_createuser.php";
 
 ?>
 
@@ -29,13 +29,13 @@ require_once "../backend/dbaccess/createuser.php";
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="admin.php">Just Do nothing</a>
+            <a class="navbar-brand" href="A_home.php">Just Do nothing</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="createuser.php">New User</a></li>
+                <li><a href="A_createuser.php">New User</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -62,7 +62,7 @@ require_once "../backend/dbaccess/createuser.php";
 </nav>
 <div class="well text-center"><h1>Create a new User</h1></div>
 <div class="container">
-    <form action="../backend/dbaccess/createuser.php" method="post">
+    <form action="../Backend/DB/DB_createuser.php" method="post">
         <!-- vorname -->
         <div class="form-group">
             <label for="firstname">firstname *</label>
@@ -102,14 +102,13 @@ require_once "../backend/dbaccess/createuser.php";
         <div class="form-group">
             <label>Choose a categorie:</label>
             <select name='categorie'>
-            <?php
-                include "../backend/dbaccess/functions.php";
+                        <?php
+                        include "../Backend/DB/functions.php";
+                        foreach ($categories as $category) {
+                            $category = $category["name"]?>
+                            <option value="<?=$category?>"><?=$category?></option>
+                        <?php } ?>
 
-                foreach (getcategroies() as $categroie){
-                    $categroie = $categroie["name"];
-                    echo "<option value='$categroie'>$categroie</option>";
-                }
-            ?>
             </select>
         </div>
 

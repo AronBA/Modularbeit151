@@ -1,5 +1,5 @@
 <?php
-
+$categories = getcategroies();
 
 function getcategroies(){
     $host = 'localhost';

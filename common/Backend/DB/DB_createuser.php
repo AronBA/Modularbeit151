@@ -1,7 +1,6 @@
 <?php
 
-require_once "dbconnection.php";
-
+require_once "DB_connection.php";
 $error = $message =  '';
 $firstname = $lastname = $admin = $username = '';
 
@@ -92,7 +91,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             $mysqli->close();
 
             // weiterleiten auf login formular
-            header('Location: ../../adminspace/admin.php');
+            header('Location: ../../Admin/A_home.php');
         }
 
     }

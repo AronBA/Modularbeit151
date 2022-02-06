@@ -1,5 +1,5 @@
 <?php
-include "dbconnection.php";
+include "DB_connection.php";
 
 
 function searchuser($user){
@@ -53,7 +53,7 @@ if ($result->num_rows > 0) {
                 <td>$categories</td>
                 <td>$admin</td> 
                 <td><a class='btn btn-info'role='button' href='functions.php?edit=$id'> <div class='postDelete'>Edit</div></a></td>
-                <td><a class='btn btn-danger 'role='button' href='../backend/dbaccess/deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
+                <td><a class='btn btn-danger 'role='button' href='../Backend/DB/DB_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
 
         </tr> ";
                     break;
@@ -76,8 +76,8 @@ if ($result->num_rows > 0) {
         <td>$categories</td>
         <td>$admin</td>  
         <form action='' method='post'>
-        <td><a class='btn btn-info'role='button' href='edituser.php?edituser=$id'> <div>Edit</div></a></td>
-        <td><a class='btn btn-danger 'role='button' href='../backend/dbaccess/deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
+        <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
+        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/DB_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
         </form>
         </tr>
         

@@ -1,5 +1,5 @@
 <?php
-require_once "dbconnection.php";
+require_once "DB_connection.php";
 
 
 if (isset($_GET["deleteuser"])){
@@ -8,6 +8,6 @@ if (isset($_GET["deleteuser"])){
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("s", $id );
     $stmt->execute();
-    header("location: ../../adminspace/admin.php");
+    header("location: ../../Admin/A_home.php");
 }
 

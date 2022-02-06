@@ -140,7 +140,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             $mysqli->close();
 
             // weiterleiten auf login formular
-            header('Location: admin.php');
+            header('Location: A_home.php');
         }
 
     }
@@ -173,13 +173,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="admin.php">Just Do nothing</a>
+            <a class="navbar-brand" href="A_home.php">Just Do nothing</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="createuser.php">New User</a></li>
+                <li><a href="A_createuser.php">New User</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -254,7 +254,7 @@ if(!empty($error)){
         <label for="cars">Choose a categorie:</label>
         <select name='categorie'>
             <?php
-            include "../backend.php";
+            include "../Backend.php";
 
             foreach (getcategroies() as $categroie){
                 $categroie = $categroie["name"];

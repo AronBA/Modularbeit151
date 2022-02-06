@@ -1,6 +1,6 @@
 <?php
-require_once "../session.php";
-require_once "dbconnection.php";
+require_once "../B_session.php";
+require_once "DB_connection.php";
 $error = '';
 $message = '';
 
@@ -55,10 +55,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error)){
                 $_SESSION["lastname"] = $row["lastname"];
                 $_SESSION['admin'] = $row["admin"];
                 if ($row["admin"]) {
-                    header('Location: ../../adminspace/admin.php');
+                    header('Location: ../../Admin/A_home.php');
 
                 } else {
-                    header('Location: ../../userspace/home.php');
+                    header('Location: ../../User/U_home.php');
                 }
         } else {
             $error .= "Benutzername oder Passwort sind falsch";
