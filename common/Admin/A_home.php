@@ -43,7 +43,7 @@ require_once "../Backend/B_session.php";
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left" method="post" action="../Backend/DB/DB_displayuser.php">
+            <form class="navbar-form navbar-left" method="post" action="">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Search" name="search">
                 </div>
@@ -51,9 +51,9 @@ require_once "../Backend/B_session.php";
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION["firstname"]." ". $_SESSION["lastname"]?> <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?=$_SESSION["firstname"]." ".$_SESSION["lastname"]?> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><?php echo $_SESSION["username"]; ?></li>
+                        <li><?=$_SESSION["username"]?></li>
                         <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
                         <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
 
@@ -79,6 +79,11 @@ require_once "../Backend/B_session.php";
     <tbody>
     <?php
     require_once "../Backend/DB/DB_displayuser.php";
+
+    if (isset($_POST["searchsub"])){
+        displaysearcheduser();
+    }
+        displayuser();
     ?>
 
     </tbody>

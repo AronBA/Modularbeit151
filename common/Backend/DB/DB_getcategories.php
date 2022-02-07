@@ -13,6 +13,7 @@ function getcategroies(){
 
     $query = 'SELECT name from categories';
     $result = $mysqli->query($query);
+    mysqli_close($mysqli);
 
     return $result;
 }

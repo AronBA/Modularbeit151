@@ -1,6 +1,7 @@
 <?php
 require_once "../B_session.php";
 require_once "DB_connection.php";
+$mysqli = connection();
 $error = '';
 $message = '';
 
@@ -67,4 +68,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error)){
         $error .= "Benutzername oder Passwort sind falsch";
     }
 }
-?>
+
