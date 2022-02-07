@@ -78,10 +78,11 @@ require_once "../Backend/B_session.php";
     </thead>
     <tbody>
     <?php
-    require_once "../Backend/DB/DB_displayuser.php";
+    require_once "../Backend/DB/DB_functions.php";
 
     if (isset($_POST["searchsub"])){
-        displaysearcheduser();
+        displaysearcheduser($_POST["search"]);
+        exit();
     }
         displayuser();
     ?>
