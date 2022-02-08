@@ -11,7 +11,7 @@ require_once "../Backend/DB/DB_createuser.php";
     <title>To Do</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="../../css/styles.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -101,15 +101,27 @@ require_once "../Backend/DB/DB_createuser.php";
         </div>
         <div class="form-group">
             <label>Choose a categorie:</label>
-            <select name='categorie'>
-                        <?php
-                        include "../Backend/DB/DB_getcategories.php";
-                        foreach ($categories as $category) {
-                            $category = $category["name"]?>
-                            <option value="<?=$category?>"><?=$category?></option>
-                        <?php } ?>
+            <div class="multi-selector">
 
-            </select>
+                <div class="select-field">
+                    <input type="text" name="" placeholder="Choose categories" id="" class="input-selector">
+                    <span class="down-arrow">&blacktriangledown;</span>
+                </div>
+                <!---------List of checkboxes and options----------->
+                <div class="list">
+                    <?php
+                    require_once "../Backend/DB/DB_functions.php";
+                    $categories = getcategories();
+                    foreach ($categories as $category) {
+                        $category = $category["name"]?>
+                        <label for="task4" class="task">
+                            <input type="checkbox" value='<?=$category?>' id='<?=$category?>' name='<?=$category?>'>
+<                            <?php echo $category?>
+>                        </label>
+                    <?php } ?>
+
+                </div>
+            </div>
         </div>
 
 
@@ -117,6 +129,9 @@ require_once "../Backend/DB/DB_createuser.php";
         <button type="reset" name="button" value="reset" class="btn btn-warning">Löschen</button>
     </form>
 </div>
+
+<script src="../../js/scripts.js"></script>
+
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

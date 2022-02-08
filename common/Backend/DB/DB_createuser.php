@@ -1,6 +1,41 @@
 <?php
 
 require_once "DB_connection.php";
+include "DB_functions.php";
+
+function setcategories($uid){
+    $query2 = "Insert into user_has_categories (user_id, categories_id) values (?,?)";
+    $mysqli = connection();
+    for ($i = 0; $i < sizeof($categroie); $i++) {
+        if (isset($_POST[$categroie[$i]])) {
+            $cid = $i;
+            $categroie = htmlspecialchars(trim($_POST['categorie']));
+            $stmt = $mysqli->prepare($query2);
+            if ($stmt === false) {
+                $error .= 'prepare() failed ' . $mysqli->error . '<br />';
+            }
+            // parameter an query binden
+            if (!$stmt->bind_param('i,i', $uid,$cid)) {
+                $error .= 'bind_param() failed ' . $mysqli->error . '<br />';
+            }
+            if (!$stmt->execute()) {
+                $error .= 'execute() failed ' . $mysqli->error . '<br />';
+            }
+            if (empty($error)) {
+                $message .= "Die Daten wurden erfolgreich in die Datenbank geschrieben<br/ >";
+                $mysqli->close();
+            } else {
+                // Ausgabe Fehlermeldung
+                $error .= "Geben Sie bitte einen korrekten Select an.<br />";
+            }
+        }
+    }
+}
+
+
+
+
+
 $error = $message =  '';
 $firstname = $lastname = $admin = $username = '';
 
@@ -18,14 +53,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     } else {
         // Ausgabe Fehlermeldung
         $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
-    }
-
-    // select
-    if(isset($_POST['categorie'])){
-        $categroie = htmlspecialchars(trim($_POST['categorie']));
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Select an.<br />";
     }
 
     // nachname vorhanden, mindestens 1 Zeichen und maximal 30 zeichen lang
@@ -53,7 +80,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     // passwort vorhanden, mindestens 8 Zeichen
     if(isset($_POST['password']) && !empty(trim($_POST['password']))){
         $password = trim($_POST['password']);
-        $password = password_hash($password, PASSWORD_ARGON2I);
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
         //entspricht das passwort unseren vorgaben? (minimal 8 Zeichen, Zahlen, Buchstaben, keine Zeilenumbrüche, mindestens ein Gross- und ein Kleinbuchstabe)
         if(!preg_match("/(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/", $password)){
@@ -66,15 +93,23 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if(empty($error)){
+        getuserid();
+        setcategories();
+
+
+
+
+
+        $mysqli = connection();
         //firstname, lastname, username, password, email
-        $query = "Insert into user (firstname, lastname, username, password, admin, categories) values (?,?,?,?,?,?)";
+        $query = "Insert into user (firstname, lastname, username, password, admin) values (?,?,?,?,?)";
         // query vorbereiten
         $stmt = $mysqli->prepare($query);
         if($stmt===false){
             $error .= 'prepare() failed '. $mysqli->error . '<br />';
         }
         // parameter an query binden
-        if(!$stmt->bind_param('ssssss', $firstname, $lastname, $username, $password, $admin, $categroie)){
+        if(!$stmt->bind_param('sssss', $firstname, $lastname, $username, $password, $admin)){
             $error .= 'bind_param() failed '. $mysqli->error . '<br />';
         }
 

@@ -73,7 +73,6 @@ require_once "../Backend/B_session.php";
         <th scope="col">firstname</th>
         <th scope="col">lastname</th>
         <th scope="col">categories</th>
-        <th scope="col">admin</th>
     </tr>
     </thead>
     <tbody>
