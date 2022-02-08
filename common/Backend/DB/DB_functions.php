@@ -2,7 +2,7 @@
 include_once "DB_connection.php";
 
 
-$categories = getcategroies();
+#returns an array of all categories
 function getcategroies(){
     $mysqli = connection();
     if ($mysqli->connect_error) {
@@ -11,9 +11,19 @@ function getcategroies(){
 
     $query = 'SELECT name from categories';
     $result = $mysqli->query($query);
-    mysqli_close($mysqli);
 
-    return $result;
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_all();
+
+        $categories = array();
+        for ($i = 0; $i < count($row); $i++){
+            $categories[$i] = $row[$i][0];
+        }
+        mysqli_close($mysqli);
+        return $categories;
+    }
+    mysqli_close($mysqli);
+    return null;
 }
 
 

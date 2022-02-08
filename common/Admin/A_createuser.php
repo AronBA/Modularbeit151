@@ -1,6 +1,8 @@
 <?php
 require_once "../Backend/B_session.php";
 require_once "../Backend/DB/DB_createuser.php";
+require_once "../Backend/DB/DB_functions.php";
+
 
 ?>
 
@@ -110,16 +112,16 @@ require_once "../Backend/DB/DB_createuser.php";
                 <!---------List of checkboxes and options----------->
                 <div class="list">
                     <?php
-                    require_once "../Backend/DB/DB_functions.php";
-                    $categories = getcategories();
-                    foreach ($categories as $category) {
-                        $category = $category["name"]?>
-                        <label for="task4" class="task">
-                            <input type="checkbox" value='<?=$category?>' id='<?=$category?>' name='<?=$category?>'>
-<                            <?php echo $category?>
->                        </label>
-                    <?php } ?>
+                    $categories = getcategroies();
+                    for ($i = 0; $i < sizeof($categories);$i++) {
+                        $category = $categories[$i];
 
+                        echo "<label for='task4' class='task'>
+                            <input type='checkbox' value='$category' id='$category' name='$category'>
+                             $category
+                              </label>";
+                    }
+                        ?>
                 </div>
             </div>
         </div>
