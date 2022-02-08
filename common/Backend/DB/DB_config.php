@@ -1,6 +1,6 @@
 <?php
-define('USER', 'username');
-define('PASSWORD', 'password');
-define('HOST', 'hostname');
-define('DATABASE', 'dbname');
+define('USER', 'root');
+define('PASSWORD', '');
+define('HOST', 'localhost');
+define('DATABASE', 'db_m151_modularbeit');
 
