@@ -7,14 +7,16 @@ This is a boring WebApp. You have to Login to use the App. There are two types o
 Admins can delete, edit and create users, but don't have acces to the userspace.
 User can create, edit and delete ToDo's. Every ToDo has a categorie, only Users with acces to the ToDo's Categorie can see them.
 Only the create of a ToDO can edit it.
+![img.png](img/github/adminspace.png)
 
 
 ## How to install
 
-there is no way you wan't to install that shit
+there is no way you wan't to install that shit. It's not even finished
 
-## idk stuff
-stupid ERM
-![img.png](img/github/img.png)
+### Database
+ERM of the Database if you wanna recreate this
+![img_1.png](img/github/databaseerm.png)
+
 
 
