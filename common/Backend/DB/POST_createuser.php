@@ -3,38 +3,21 @@
 require_once "DB_connection.php";
 include "DB_functions.php";
 
+#
 function setcategories($uid){
-    $query2 = "Insert into user_has_categories (user_id, categories_id) values (?,?)";
-    $mysqli = connection();
-    for ($i = 0; $i < sizeof($categroie); $i++) {
-        if (isset($_POST[$categroie[$i]])) {
-            $cid = $i;
-            $categroie = htmlspecialchars(trim($_POST['categorie']));
-            $stmt = $mysqli->prepare($query2);
-            if ($stmt === false) {
-                $error .= 'prepare() failed ' . $mysqli->error . '<br />';
-            }
-            // parameter an query binden
-            if (!$stmt->bind_param('i,i', $uid,$cid)) {
-                $error .= 'bind_param() failed ' . $mysqli->error . '<br />';
-            }
-            if (!$stmt->execute()) {
-                $error .= 'execute() failed ' . $mysqli->error . '<br />';
-            }
-            if (empty($error)) {
-                $message .= "Die Daten wurden erfolgreich in die Datenbank geschrieben<br/ >";
-                $mysqli->close();
-            } else {
-                // Ausgabe Fehlermeldung
-                $error .= "Geben Sie bitte einen korrekten Select an.<br />";
-            }
+   $categories = getcategroies();;
+    for ($i = 0; $i < sizeof($categories); $i++) {
+        if (isset($_POST[$categories[$i]])){
+            $cid = getcategorieid($_POST[$categories[$i]]);
+            $query = "Insert into user_has_categories (user_id, categories_id) VALUES (?,?)";
+            $mysqli = connection();
+            $stmt = $mysqli->prepare($query);
+            $stmt->bind_param("ss", $uid,$cid );
+            $stmt->execute();
+
         }
     }
 }
-
-
-
-
 
 $error = $message =  '';
 $firstname = $lastname = $admin = $username = '';
@@ -93,8 +76,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if(empty($error)){
-        getuserid();
-        setcategories();
+
+
 
 
 
@@ -120,13 +103,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         // kein Fehler!
         if(empty($error)){
             $message .= "Die Daten wurden erfolgreich in die Datenbank geschrieben<br/ >";
-            // felder leeren > oder weiterleitung auf anderes script: z.B. Login!
-            $username = $password = $firstname = $lastname = $admin =  '';
             // verbindung schliessen
             $mysqli->close();
+            $id=getuserid($username);
+            setcategories($id);
 
             // weiterleiten auf login formular
             header('Location: ../../Admin/A_home.php');
+
         }
 
     }

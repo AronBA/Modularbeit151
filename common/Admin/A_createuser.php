@@ -1,6 +1,6 @@
 <?php
 require_once "../Backend/B_session.php";
-require_once "../Backend/DB/DB_createuser.php";
+require_once "../Backend/DB/POST_createuser.php";
 require_once "../Backend/DB/DB_functions.php";
 
 
@@ -64,7 +64,7 @@ require_once "../Backend/DB/DB_functions.php";
 </nav>
 <div class="well text-center"><h1>Create a new User</h1></div>
 <div class="container">
-    <form action="../Backend/DB/DB_createuser.php" method="post">
+    <form action="../Backend/DB/POST_createuser.php" method="post">
         <!-- vorname -->
         <div class="form-group">
             <label for="firstname">firstname *</label>

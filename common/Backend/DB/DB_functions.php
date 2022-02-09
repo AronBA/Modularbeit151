@@ -1,7 +1,6 @@
 <?php
 include_once "DB_connection.php";
 
-
 #returns an array of all categories
 function getcategroies(){
     $mysqli = connection();
@@ -33,6 +32,21 @@ function getuserid($uname){
     $query = 'SELECT id from user  where username = ?';
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("s", $uname );
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_all();
+        mysqli_close($mysqli);
+        return $row[0][0];
+    }
+    mysqli_close($mysqli);
+    return null;
+}
+function getcategorieid($cname){
+    $mysqli = connection();
+    $query = 'SELECT id from categories  where name = ?';
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("s", $cname );
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
@@ -95,7 +109,7 @@ function displaysearcheduser($uname){
         <td>$categories</td>
         <form action='' method='post'>
         <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
-        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/DB_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
+        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/GET_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
         </form>
         </tr>
         
@@ -133,7 +147,7 @@ function displayuser(){
         <td>$categories</td>
         <form action='' method='post'>
         <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
-        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/DB_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
+        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/GET_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
         </form>
         </tr>
         
