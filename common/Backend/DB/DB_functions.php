@@ -107,10 +107,11 @@ function displaysearcheduser($uname){
         <td>$firstname</td>
         <td>$lastname</td>
         <td>$categories</td>
+        <form action='' method='get'>
+        <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td></form>
         <form action='' method='post'>
-        <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
-        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/GET_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
-        </form>
+        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/GET_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td></form>
+        
         </tr>
         
         
@@ -160,4 +161,101 @@ function displayuser(){
     mysqli_close($mysqli);
 }
 
+function displaytodo($user){
+    $uid = getuserid($user);
+    $query = "SELECT * from todo where archive = 0 and user_id = ?";
+    $mysqli = connection();
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("s",$uid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+
+            $id = $row["id"];
+            $priorety = $row["priorety"];
+            $name = $row["name"];
+            $text = $row["text"];
+            $datebegin = $row["datebegin"];
+            $datefinish = $row["datefinish"];
+            $progress = $row["progress"];
+            $userid = $row["user_id"];
+
+            $categories = $row["categories_id"];
+            echo "
+
+        <tr>
+        <th scope='row'>$id</th>
+        <td>$priorety</td>
+        <td>$name</td>
+        <td>$text</td>
+        <td>$datebegin</td>
+        <td id='date'></td>
+        <td><div class='progress'>
+  <div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar'
+  aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100' style='width:$progress%'>
+    $progress% Complete (success)
+  </div>
+</div></td>
+        <td>$categories</td>
+        <td>$userid</td>
+                
+        <form action='' method='post'>
+        <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
+        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/GET_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td>
+        </form>
+        </tr>
+        
+        
+        <script>document.getElementById('date').innerHTML=date($datebegin,$datefinish)</script>
+     ";}
+    } else {
+        echo $uid;
+        echo "cok";
+    }
+    mysqli_close($mysqli);
+}
+
+function displaysearchedtodo($todoname){
+    $likename = "%$todoname%";
+    $mysqli = connection();
+    $query = 'SELECT * from todo where todo.name like ?';
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("s", $likename );
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+
+            $id = $row["id"];
+            $firstname = $row["firstname"];
+            $lastname = $row["lastname"];
+            $username = $row["username"];
+
+            $categories = implode(", ",getusercategories($id));
+            echo "
+
+        <tr>
+        <th scope='row'>$id</th>
+        <td>$username</td>
+        <td>$firstname</td>
+        <td>$lastname</td>
+        <td>$categories</td>
+        <form action='' method='get'>
+        <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td></form>
+        <form action='' method='post'>
+        <td><a class='btn btn-danger 'role='button' href='../Backend/DB/GET_deleteuser.php?deleteuser=$id'> <div>Delete</div></a></td></form>
+        
+        </tr>
+        
+        
+        
+     ";}
+    } else {
+        echo "0 results";
+    }
+    mysqli_close($mysqli);
+}
 

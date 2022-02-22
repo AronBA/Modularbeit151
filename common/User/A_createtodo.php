@@ -1,26 +1,9 @@
 <?php
 require_once "../Backend/B_session.php";
-require_once "../Backend/DB/POST_edituser.php";
+require_once "../Backend/DB/POST_createuser.php";
 require_once "../Backend/DB/DB_functions.php";
 
 
-$mysqli = connection();
-
-if (isset($_GET["userid"])){
-    $id = $_GET["userid"];
-    $query = 'select * from user where id = ?';
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("s", $id );
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if($result->num_rows) {
-        $row = $result->fetch_assoc();
-
-        $username = $row["username"];
-    }
-    mysqli_close($mysqli);
-}
 ?>
 
 <!DOCTYPE html>
@@ -79,15 +62,15 @@ if (isset($_GET["userid"])){
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="well text-center"><h1>You are editing <?=$username?></h1></div>
+<div class="well text-center"><h1>Create a new To do</h1></div>
 <div class="container">
-    <form action="../Backend/DB/POST_edituser.php" method="post">
+    <form action="../Backend/DB/POST_createtodo.php" method="post">
         <!-- vorname -->
         <div class="form-group">
             <label for="firstname">firstname *</label>
             <input type="text" name="firstname" class="form-control" id="firstname"
 
-                   placeholder="Enter your first name."
+                   placeholder="Geben Sie Ihren Vornamen an."
                    required="true">
         </div>
         <!-- nachname -->
@@ -95,27 +78,27 @@ if (isset($_GET["userid"])){
             <label for="lastname">lastname *</label>
             <input type="text" name="lastname" class="form-control" id="lastname"
 
-                   placeholder="Enter your last name."
+                   placeholder="Geben Sie Ihren Nachnamen an"
                    maxlength="30"
                    required="true">
         </div>
         <!-- benutzername -->
         <div class="form-group">
-            <label for="username">username *</label>
+            <label for="username">Benutzername *</label>
             <input type="text" name="username" class="form-control" id="username"
 
-                   placeholder="Upper- and lower case letters, min 6 characters."
+                   placeholder="Gross- und Keinbuchstaben, min 6 Zeichen."
                    maxlength="30" required="true"
                    pattern="(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}"
-                   title="Upper- and lower case letters, min 6 characters.">
+                   title="Gross- und Keinbuchstaben, min 6 Zeichen.">
         </div>
         <!-- password -->
         <div class="form-group">
-            <label for="password">password *</label>
+            <label for="password">Password *</label>
             <input type="password" name="password" class="form-control" id="password"
-                   placeholder="Upper and lower case letters, numbers, special characters, at least 8 characters"
+                   placeholder="Gross- und Kleinbuchstaben, Zahlen, Sonderzeichen, min. 8 Zeichen, keine Umlaute"
                    pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-                   title="At least one uppercase and one lowercase letter, one number and one special character, at least 8 characters long."
+                   title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute."
                    required="true">
         </div>
         <div class="form-group">
@@ -138,7 +121,7 @@ if (isset($_GET["userid"])){
                              $category
                               </label>";
                     }
-                    ?>
+                        ?>
                 </div>
             </div>
         </div>

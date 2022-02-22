@@ -10,13 +10,19 @@ Only the create of a ToDO can edit it.
 ![img.png](img/github/adminspace.png)
 
 
-## How to install
+## How to use
 
-there is no way you wan't to install that shit. It's not even finished
+### Admin Login
+Username: AronderAdmin
 
+Password: Adminpasswort123$
 ### Database
 ERM of the Database if you wanna recreate this
 ![img_1.png](img/github/databaseerm.png)
+
+
+
+
 
 
 
