@@ -26,44 +26,28 @@ require_once "../Backend/B_session.php";
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="A_home.php">Just Do nothing</a>
+            <a class="navbar-brand" href="U_home.php">Just Do nothing</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="A_createuser.php">New User</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Create Categorie</a></li>
-                        <li><a href="#">Edit Categorie</a></li>
-                        <li><a href="#">Delete Categorie</a></li>
-
-                    </ul>
-                </li>
+                <li><a href="U_createtodo.php">New ToDo</a></li>
+                <form class="navbar-form navbar-left" method="post" action="">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search" name="search">
+                    </div>
+                    <button type="submit" class="btn btn-default" name="searchsub">Submit</button>
+                </form>
             </ul>
-            <form class="navbar-form navbar-left" method="post" action="">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search" name="search">
-                </div>
-                <button type="submit" class="btn btn-default" name="searchsub">Submit</button>
-            </form>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?=$_SESSION["firstname"]." ".$_SESSION["lastname"]?> <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><?=$_SESSION["username"]?></li>
-                        <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
-                        <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
-
-                    </ul>
-                </li>
+                <li><a href="#"><?php echo "Willkommen ". $_SESSION["firstname"]." ". $_SESSION["lastname"]?></a></li>
+                <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="well text-center"><h1>List of all Users</h1></div>
+<div class="well text-center"><h1>ToDo</h1></div>
 <div class="container">
 <table class="table table-hover">
     <thead>
@@ -77,8 +61,7 @@ require_once "../Backend/B_session.php";
         <th scope="col">progress</th>
         <th scope="col">categorie</th>
         <th scope="col">created by</th>
-        <th scope="col">edit</th>
-        <th scope="col">delete</th>
+
     </tr>
     </thead>
     <tbody>
@@ -86,7 +69,7 @@ require_once "../Backend/B_session.php";
     require_once "../Backend/DB/DB_functions.php";
 
     if (isset($_POST["searchsub"])){
-        displaysearchedtodo($_POST["search"]);
+        displaysearchedtodo($_SESSION["username"],$_POST["search"]);
         exit();
     }
         displaytodo($_SESSION["username"]);
@@ -94,6 +77,8 @@ require_once "../Backend/B_session.php";
 
     </tbody>
 </table>
+    <a role="button" href="U_createtodo.php" type="button" class="btn btn-primary btn-block btn-success">add new Todo</a>
+
 </div>
 <script src="../../js/scripts.js"></script>
 </body>

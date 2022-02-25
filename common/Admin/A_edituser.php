@@ -7,6 +7,7 @@ require_once "../Backend/DB/DB_functions.php";
 $mysqli = connection();
 
 if (isset($_GET["userid"])){
+
     $id = $_GET["userid"];
     $query = 'select * from user where id = ?';
     $stmt = $mysqli->prepare($query);
@@ -16,7 +17,8 @@ if (isset($_GET["userid"])){
 
     if($result->num_rows) {
         $row = $result->fetch_assoc();
-
+        $firstname = $row["firstname"];
+        $lastname = $row["lastname"];
         $username = $row["username"];
     }
     mysqli_close($mysqli);
@@ -33,6 +35,12 @@ if (isset($_GET["userid"])){
     <link rel="stylesheet" href="../../css/styles.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Datepicker -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
+    <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/bootstrap-datepicker.de.min.js"></script>
+
+
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -86,7 +94,7 @@ if (isset($_GET["userid"])){
         <div class="form-group">
             <label for="firstname">firstname *</label>
             <input type="text" name="firstname" class="form-control" id="firstname"
-
+                   value="<?=$firstname?>"
                    placeholder="Enter your first name."
                    required="true">
         </div>
@@ -94,7 +102,7 @@ if (isset($_GET["userid"])){
         <div class="form-group">
             <label for="lastname">lastname *</label>
             <input type="text" name="lastname" class="form-control" id="lastname"
-
+                   value="<?=$lastname?>"
                    placeholder="Enter your last name."
                    maxlength="30"
                    required="true">
@@ -103,7 +111,7 @@ if (isset($_GET["userid"])){
         <div class="form-group">
             <label for="username">username *</label>
             <input type="text" name="username" class="form-control" id="username"
-
+                   value="<?=$username?>"
                    placeholder="Upper- and lower case letters, min 6 characters."
                    maxlength="30" required="true"
                    pattern="(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}"
@@ -149,9 +157,8 @@ if (isset($_GET["userid"])){
     </form>
 </div>
 
+
 <script src="../../js/scripts.js"></script>
-
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->

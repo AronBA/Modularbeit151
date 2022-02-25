@@ -1,76 +1,85 @@
 <?php
 
 
+
+include "../B_session.php";
 require_once "DB_connection.php";
 include "DB_functions.php";
 
 #
-function setcategories($uid)
+function updatecategories()
 {
     $categories = getcategroies();;
     for ($i = 0; $i < sizeof($categories); $i++) {
         if (isset($_POST[$categories[$i]])) {
             $cid = getcategorieid($_POST[$categories[$i]]);
-            $query = "Insert into user_has_categories (user_id, categories_id) VALUES (?,?)";
-            $mysqli = connection();
-            $stmt = $mysqli->prepare($query);
-            $stmt->bind_param("ss", $uid, $cid);
-            $stmt->execute();
+            return $cid;
 
         }
     }
 }
+
+
+
 
 $error = $message = '';
 $firstname = $lastname = $admin = $username = '';
 
 // Wurden Daten mit "POST" gesendet?
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $currentDate = date("Y-m-d");
+    $user = $_SESSION["username"];
+    $uid = getuserid($user);
+
     // Ausgabe des gesamten $_POST Arrays
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
 
     // vorname vorhanden, mindestens 1 Zeichen und maximal 30 Zeichen lang
-    if (isset($_POST['firstname']) && !empty(trim($_POST['firstname'])) && strlen(trim($_POST['firstname'])) <= 30) {
+    if (isset($_POST['title']) && !empty(trim($_POST['title'])) && strlen(trim($_POST['title'])) <= 30) {
         // Spezielle Zeichen Escapen > Script Injection verhindern
-        $firstname = htmlspecialchars(trim($_POST['firstname']));
+        $title = htmlspecialchars(trim($_POST['title']));
     } else {
         // Ausgabe Fehlermeldung
         $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
     }
 
     // nachname vorhanden, mindestens 1 Zeichen und maximal 30 zeichen lang
-    if (isset($_POST['lastname']) && !empty(trim($_POST['lastname'])) && strlen(trim($_POST['lastname'])) <= 30) {
+    if (isset($_POST['editor']) && !empty(trim($_POST['editor'])) && strlen(trim($_POST['editor'])) <= 300) {
         // Spezielle Zeichen Escapen > Script Injection verhindern
-        $lastname = htmlspecialchars(trim($_POST['lastname']));
+        $text = htmlspecialchars(trim($_POST['editor']));
     } else {
         // Ausgabe Fehlermeldung
         $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
     }
 
-    // benutzername vorhanden, mindestens 6 Zeichen und maximal 30 zeichen lang
-    if (isset($_POST['username']) && !empty(trim($_POST['username'])) && strlen(trim($_POST['username'])) <= 30) {
-        $username = trim($_POST['username']);
-        // entspricht der benutzername unseren vogaben (minimal 6 Zeichen, Gross- und Kleinbuchstaben)
-        if (!preg_match("/(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}/", $username)) {
-            $error .= "Der Benutzername entspricht nicht dem geforderten Format.<br />";
-        }
+
+    if (isset($_POST['priority']) && !empty(trim($_POST['priority'])) && strlen(trim($_POST['priority'])) <= 30) {
+        // Spezielle Zeichen Escapen > Script Injection verhindern
+        $priority = htmlspecialchars(trim($_POST['priority']));
     } else {
         // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Benutzernamen ein.<br />";
+        $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
+    }
+
+    if (isset($_POST['progress']) && !empty($_POST['progress'])) {
+        $progress = $_POST['progress'];
+
+
+    } else {
+        // Ausgabe Fehlermeldung
+        $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
     }
 
 
-    // passwort vorhanden, mindestens 8 Zeichen
-    if (isset($_POST['password']) && !empty(trim($_POST['password']))) {
-        $password = trim($_POST['password']);
-        $password = password_hash($password, PASSWORD_DEFAULT);
 
-        //entspricht das passwort unseren vorgaben? (minimal 8 Zeichen, Zahlen, Buchstaben, keine Zeilenumbrüche, mindestens ein Gross- und ein Kleinbuchstabe)
-        if (!preg_match("/(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/", $password)) {
-            $error .= "Das Passwort entspricht nicht dem geforderten Format.<br />";
-        }
+
+    // passwort vorhanden, mindestens 8 Zeichen
+    if (isset($_POST['date']) && !empty(trim($_POST['date']))) {
+        $datefinish = trim($_POST['date']);
+
+
     } else {
         // Ausgabe Fehlermeldung
         $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
@@ -82,14 +91,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         $mysqli = connection();
         //firstname, lastname, username, password, email
-        $query = "Insert into user (firstname, lastname, username, password, admin) values (?,?,?,?,?)";
+        $query = "Insert into todo (name, text, datebegin, datefinish,priorety,progress, categories_id, user_id) values (?,?,?,?,?,?,?)";
         // query vorbereiten
         $stmt = $mysqli->prepare($query);
         if ($stmt === false) {
             $error .= 'prepare() failed ' . $mysqli->error . '<br />';
         }
         // parameter an query binden
-        if (!$stmt->bind_param('sssss', $firstname, $lastname, $username, $password, $admin)) {
+        if (!$stmt->bind_param('sssssss', $title, $text, $currentDate, $datefinish, $priority,$progress,updatecategories(),$uid)) {
             $error .= 'bind_param() failed ' . $mysqli->error . '<br />';
         }
 
@@ -102,11 +111,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $message .= "Die Daten wurden erfolgreich in die Datenbank geschrieben<br/ >";
             // verbindung schliessen
             $mysqli->close();
-            $id = getuserid($username);
-            setcategories($id);
 
             // weiterleiten auf login formular
-            header('Location: ../../Admin/A_home.php');
+            header('Location: ../../User/U_home.php');
 
         }
 

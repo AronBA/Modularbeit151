@@ -32,8 +32,8 @@ require_once "../Backend/B_session.php";
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="A_createuser.php">New User</a></li>
-                <li><a href="A_categories.php">Categories</a></li>
+                <li><a href="A_Home.php">User</a></li>
+                <li><a href="A_createcategories.php">New Categorie</a></li>
 
             </ul>
             <form class="navbar-form navbar-left" method="post" action="">
@@ -43,40 +43,35 @@ require_once "../Backend/B_session.php";
                 <button type="submit" class="btn btn-default" name="searchsub">Submit</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><?php echo "Willkommen ". $_SESSION["firstname"]." ". $_SESSION["lastname"]?></a></li>
-                    <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
-                </ul>
+                <li><a href="#"><?php echo "Willkommen ". $_SESSION["firstname"]." ". $_SESSION["lastname"]?></a></li>
+                <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="well text-center"><h1>List of all Users</h1></div>
+<div class="well text-center"><h1>List of all Categories</h1></div>
 <div class="container">
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">username</th>
-        <th scope="col">firstname</th>
-        <th scope="col">lastname</th>
-        <th scope="col">categories</th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php
-    require_once "../Backend/DB/DB_functions.php";
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        require_once "../Backend/DB/DB_functions.php";
 
-    if (isset($_POST["searchsub"])){
-        displaysearcheduser($_POST["search"]);
-        exit();
-    }
-        displayuser();
-    ?>
+        if (isset($_POST["searchsub"])){
+            displaysearchedcategorie($_POST["search"]);
+            exit();
+        }
+        displaycategories();
+        ?>
 
-    </tbody>
-</table>
-    <a role="button" href="A_createuser.php" type="button" class="btn btn-primary btn-block btn-success">add new user</a>
+        </tbody>
+    </table>
+    <a role="button" href="A_createcategories.php" type="button" class="btn btn-primary btn-block btn-success">add new categorie</a>
 
 </div>
 

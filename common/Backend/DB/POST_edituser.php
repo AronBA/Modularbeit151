@@ -4,10 +4,6 @@ require_once "DB_connection.php";
 include "DB_functions.php";
 
 
-
-
-
-
 function updatecategories($uid){
     $categories = getcategroies();;
     for ($i = 0; $i < sizeof($categories); $i++) {
@@ -92,7 +88,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             $error .= 'prepare() failed '. $mysqli->error . '<br />';
         }
         // parameter an query binden
-        if(!$stmt->bind_param('ssss', $firstname, $lastname, $username, $password, $id)){
+        if(!$stmt->bind_param('sssss', $firstname, $lastname, $username, $password, $id)){
             $error .= 'bind_param() failed '. $mysqli->error . '<br />';
         }
 

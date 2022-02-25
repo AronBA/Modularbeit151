@@ -68,74 +68,18 @@ require_once "../Backend/DB/DB_functions.php";
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="well text-center"><h1>Create a new User</h1></div>
+<div class="well text-center"><h1>Create a new Categorie</h1></div>
 <div class="container">
-    <form action="../Backend/DB/POST_createuser.php" method="post">
-        <!-- vorname -->
+    <form action="../Backend/DB/POST_createcategorie.php" method="post">
+        <!-- Name -->
         <div class="form-group">
-            <label for="firstname">firstname *</label>
-            <input type="text" name="firstname" class="form-control" id="firstname"
-
-                   placeholder="Geben Sie Ihren Vornamen an."
+            <label for="firstname">name *</label>
+            <input type="text" name="name" class="form-control" id="name"
+                   placeholder="name of the categorie"
                    required="true">
         </div>
-        <!-- nachname -->
-        <div class="form-group">
-            <label for="lastname">lastname *</label>
-            <input type="text" name="lastname" class="form-control" id="lastname"
-
-                   placeholder="Geben Sie Ihren Nachnamen an"
-                   maxlength="30"
-                   required="true">
-        </div>
-        <!-- benutzername -->
-        <div class="form-group">
-            <label for="username">Benutzername *</label>
-            <input type="text" name="username" class="form-control" id="username"
-
-                   placeholder="Gross- und Keinbuchstaben, min 6 Zeichen."
-                   maxlength="30" required="true"
-                   pattern="(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}"
-                   title="Gross- und Keinbuchstaben, min 6 Zeichen.">
-        </div>
-        <!-- password -->
-        <div class="form-group">
-            <label for="password">Password *</label>
-            <input type="password" name="password" class="form-control" id="password"
-                   placeholder="Gross- und Kleinbuchstaben, Zahlen, Sonderzeichen, min. 8 Zeichen, keine Umlaute"
-                   pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-                   title="mindestens einen Gross-, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen, mindestens 8 Zeichen lang,keine Umlaute."
-                   required="true">
-        </div>
-        <div class="form-group">
-            <label>Choose a categorie:</label>
-            <div class="multi-selector">
-
-                <div class="select-field">
-                    <input type="text" name="" placeholder="Choose categories" id="" class="input-selector">
-                    <span class="down-arrow">&blacktriangledown;</span>
-                </div>
-                <!---------List of checkboxes and options----------->
-                <div class="list">
-                    <?php
-                    $categories = getcategroies();
-                    for ($i = 0; $i < sizeof($categories);$i++) {
-                        $category = $categories[$i];
-
-                        echo "<label for='task4' class='task'>
-                            <input type='checkbox' value='$category' id='$category' name='$category'>
-                             $category
-                              </label>";
-                    }
-                        ?>
-
-                </div>
-            </div>
-        </div>
-
-
-        <button type="submit" name="button" value="submit" class="btn btn-info">Senden</button>
-        <button type="reset" name="button" value="reset" class="btn btn-warning">Löschen</button>
+        <button type="submit" name="button" value="submit" class="btn btn-info">Submit</button>
+        <button type="reset" name="button" value="reset" class="btn btn-warning">Delete</button>
     </form>
 </div>
 
