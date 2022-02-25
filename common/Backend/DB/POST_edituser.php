@@ -81,7 +81,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     if(empty($error)){
         $mysqli = connection();
         //firstname, lastname, username, password, email
-        $query = "UPDATE user SET firstname = ?, lastname = ?,username = ?,password = ?  WHERE id = ?;";
+        $query = "UPDATE user SET firstname = ?, lastname = ?,username = ?,password = ?  WHERE id = ?";
         // query vorbereiten
         $stmt = $mysqli->prepare($query);
         if($stmt===false){

@@ -37,13 +37,13 @@ require_once "../Backend/DB/DB_functions.php";
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="U_home.php">Just Do nothing</a>
+            <a class="navbar-brand" href="A_home.php">Just Do nothing</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="U_createtodo.php">New ToDo</a></li>
+                <li><a href="A_createuser.php">New User</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -55,36 +55,67 @@ require_once "../Backend/DB/DB_functions.php";
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><?php echo "Willkommen ". $_SESSION["firstname"]." ". $_SESSION["lastname"]?></a></li>
-                <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION["firstname"]." ". $_SESSION["lastname"]?> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><?php echo $_SESSION["username"]; ?></a></li>
+                        <li><a href="../logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
+                        <li><a href="../logout.php"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
+
+                    </ul>
+                </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="well text-center"><h1>Create a new To do</h1></div>
+<div class="well text-center"><h1>Create a new Todo</h1></div>
 <div class="container">
     <form action="../Backend/DB/POST_createtodo.php" method="post">
-        <!-- titel -->
+        <!-- vorname -->
         <div class="form-group">
-            <label for="title">title *</label>
-            <input type="text" name="title" class="form-control" id="title"
+            <label for="firstname">titel *</label>
+            <input type="text" name="titel" class="form-control" id="titel"
 
-                   placeholder="Enter your Title"
+                   placeholder="Geben Sie Ihren Vornamen an."
                    required="true">
         </div>
-        <!-- text -->
+        <!-- nachname -->
         <div class="form-group">
-                <div class="row justify-content-md-center">
-                    <div class="col-md-12 col-lg-8">
-                        <label>Describe your Todo here</label>
-                        <div class="form-group">
-                            <textarea id="editor"></textarea>
-                        </div>
-                    </div>
-                </div>
+            <label for="content">text *</label>
+            <textarea class='form-control' rows='5' name='content' id='content' maxlength='2000' placeholder="enter your description here"></textarea>
         </div>
 
-        <!-- categories -->
+        <!-- benutzername -->
+        <div class="form-group">
+            <label for="date"> date *</label>
+            <input type="date" name="date" class="form-control" id="date" required>
+        </div>
+
+        <!-- password -->
+        <div class="form-group">
+            <label for="firstname">progress *</label>
+            <input type="number" name="progress" class="form-control" id="progress"
+                   min="0"
+                   max="100"
+
+                   placeholder="progress"
+                   required="true">
+        </div>
+
+        <div class="form-group">
+            <label for="firstname">priority *</label>
+            <input type="number" name="priority" class="form-control" id="priority"
+                   min="0"
+                   max="5"
+                   placeholder="priority"
+                   required="true">
+        </div>
+
+
+
+
+
+
         <div class="form-group">
             <label>Choose a categorie:</label>
             <div class="multi-selector">
@@ -105,34 +136,11 @@ require_once "../Backend/DB/DB_functions.php";
                              $category
                               </label>";
                     }
-                        ?>
+                    ?>
+
                 </div>
             </div>
         </div>
-
-        <!-- date -->
-        <div class="form-group">
-            <label for="date">date *</label>
-            <input type="date" name="date" class="form-control" id="date"
-
-                   required="true">
-        </div>
-
-        <!-- priority -->
-        <div class="form-group">
-            <label for="priority">Priority</label>
-            <input type="range" min="0" max="5" value="5" id="priority" step="1" oninput="outputUpdate2(value)">
-            <output for="priority" id="priorityo">5 out of 5</output>
-        </div>
-
-        <!-- progress -->
-        <div class="form-group">
-            <label for="progress">Progress</label>
-            <input type="range" min="0" max="100" value="50" id="progress" step="1" oninput="outputUpdate(value)">
-            <output for="progress" id="progresso">50%</output>
-
-        </div>
-
 
 
         <button type="submit" name="button" value="submit" class="btn btn-info">Senden</button>
@@ -143,18 +151,6 @@ require_once "../Backend/DB/DB_functions.php";
 
 
 <script src="../../js/scripts.js"></script>
-<script src="https://cdn.tiny.cloud/1/46c824408rnuh7cmopp8luh6bmt3k48a590qv1r5chi5f3rx/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-
-<script>
-    tinymce.init({
-        selector: 'textarea#editor',
-        menubar: false
-    });
-</script>
-
-
-
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
