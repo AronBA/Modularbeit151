@@ -124,7 +124,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 
             // weiterleiten auf login formular
-            header('Location: ../../Admin/A_home.php');
+            header('Location: ../../User/U_home.php');
 
         }
 

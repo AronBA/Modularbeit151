@@ -90,6 +90,8 @@ if (isset($_GET["userid"])){
 <div class="well text-center"><h1>You are editing <?=$username?></h1></div>
 <div class="container">
     <form action="../Backend/DB/POST_edituser.php" method="post">
+        <input type="hidden" name='id' value="<?=$id?>" size="0" hidden>
+
         <!-- vorname -->
         <div class="form-group">
             <label for="firstname">firstname *</label>

@@ -174,7 +174,6 @@ function displaytodo($user){
 
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            print_r($row);
             $id = $row["id"];
             $priorety = $row["priorety"];
             $name = $row["todoname"];
@@ -208,7 +207,7 @@ function displaytodo($user){
         <td>$username</td>
                 
         <form action='' method='post'>
-        <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
+        <td><a class='btn btn-info'role='button' href='U_edittodo.php?edittodo=$id'> <div>Edit</div></a></td>
         <td><a class='btn btn-primary 'role='button' href='../Backend/DB/GET_delete.php?archivetodo=$id'> <div>Archive</div></a></td>
         <td><a class='btn btn-danger 'role='button' href='../Backend/DB/GET_delete.php?deletetodo=$id'> <div>Delete</div></a></td>
 
@@ -238,7 +237,7 @@ function displaytodo($user){
         <td>$username</td>
                 
         <form action='' method='post'>
-        <td><a class='btn btn-info disabled 'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
+        <td><a class='btn btn-info disabled 'role='button' href='U_edittodo.php?edittodo=$id'> <div>Edit</div></a></td>
         <td><a class='btn btn-primary disabled 'role='button' href='../Backend/DB/GET_delete.php?archivetodo=$id'> <div>Archive</div></a></td>
         <td><a class='btn btn-danger disabled  'role='button' href='../Backend/DB/GET_delete.php?deletetodo=$id'> <div>Delete</div></a></td>
 
@@ -270,7 +269,6 @@ function displaysearchedtodo($user, $todoname){
 
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
-            print_r($row);
             $id = $row["id"];
             $priorety = $row["priorety"];
             $name = $row["todoname"];
@@ -304,7 +302,7 @@ function displaysearchedtodo($user, $todoname){
         <td>$username</td>
                 
         <form action='' method='post'>
-        <td><a class='btn btn-info'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
+        <td><a class='btn btn-info'role='button' href='U_edittodo.php?edittodo=$id'> <div>Edit</div></a></td>
         
         <td><a class='btn btn-primary 'role='button' href='../Backend/DB/GET_delete.php?archivetodo=$id'> <div>Archive</div></a></td>
         <td><a class='btn btn-danger 'role='button' href='../Backend/DB/GET_delete.php?deletetodo=$id'> <div>Delete</div></a></td>
@@ -335,7 +333,7 @@ function displaysearchedtodo($user, $todoname){
         <td>$username</td>
                 
         <form action='' method='post'>
-        <td><a class='btn btn-info disabled 'role='button' href='A_edituser.php?edituser=$id'> <div>Edit</div></a></td>
+        <td><a class='btn btn-info disabled 'role='button' href='U_edittodo.php?edittodo=$id'> <div>Edit</div></a></td>
         <td><a class='btn btn-primary disabled 'role='button' href='../Backend/DB/GET_delete.php?archivetodo=$id'> <div>Archive</div></a></td>
         <td><a class='btn btn-danger disabled  'role='button' href='../Backend/DB/GET_delete.php?deletetodo=$id'> <div>Delete</div></a></td>
 

@@ -43,27 +43,13 @@ require_once "../Backend/DB/DB_functions.php";
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="A_createuser.php">New User</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Create Categorie</a></li>
-                        <li><a href="#">Edit Categorie</a></li>
-                        <li><a href="#">Delete Categorie</a></li>
+                <li><a href="A_Home.php">User</a></li>
+                <li><a href="A_createcategories.php">New Categorie</a></li>
 
-                    </ul>
-                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION["firstname"]." ". $_SESSION["lastname"]?> <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><?php echo $_SESSION["username"]; ?></a></li>
-                        <li><a href="../logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
-                        <li><a href="../logout.php"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
-
-                    </ul>
-                </li>
+                <li><a href="#"><?php echo "Willkommen ". $_SESSION["firstname"]." ". $_SESSION["lastname"]?></a></li>
+                <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->

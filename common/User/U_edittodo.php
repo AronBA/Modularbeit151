@@ -6,23 +6,28 @@ require_once "../Backend/DB/DB_functions.php";
 
 $mysqli = connection();
 
-if (isset($_GET["userid"])){
-    $id = $_GET["userid"];
-    $query = 'select * from user where id = ?';
+if (isset($_GET["edittodo"])){
+
+    $id = $_GET["edittodo"];
+    $query = 'select * from todo where id = ?';
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("s", $id );
+    $stmt->bind_param("s", $id);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if($result->num_rows) {
         $row = $result->fetch_assoc();
+        $title = $row["name"];
+        $text = $row["text"];
+        $datefinsh = $row["datefinish"];
+        $progress = $row["progress"];
+        $priorety = $row["priorety"];
 
-        $username = $row["username"];
+
     }
     mysqli_close($mysqli);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -33,6 +38,12 @@ if (isset($_GET["userid"])){
     <link rel="stylesheet" href="../../css/styles.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Datepicker -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-datepicker.css">
+    <script src="js/bootstrap-datepicker.min.js"></script>
+    <script src="js/bootstrap-datepicker.de.min.js"></script>
+
+
 
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -55,15 +66,6 @@ if (isset($_GET["userid"])){
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="U_createtodo.php">New ToDo</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Create Categorie</a></li>
-                        <li><a href="#">Edit Categorie</a></li>
-                        <li><a href="#">Delete Categorie</a></li>
-
-                    </ul>
-                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><?php echo "Willkommen ". $_SESSION["firstname"]." ". $_SESSION["lastname"]?></a></li>
@@ -72,45 +74,56 @@ if (isset($_GET["userid"])){
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="well text-center"><h1>You are editing <?=$username?></h1></div>
+<div class="well text-center"><h1>you are editing <?=$title?></h1></div>
 <div class="container">
-    <form action="../Backend/DB/POST_edituser.php" method="post">
+    <form action="../Backend/DB/POST_createtodo.php" method="post">
         <!-- vorname -->
         <div class="form-group">
-            <label for="firstname">firstname *</label>
-            <input type="text" name="firstname" class="form-control" id="firstname"
+            <label for="firstname">titel *</label>
+            <input type="text" name="titel" value="<?=$title?>" class="form-control" id="titel"
 
-                   placeholder="Enter your first name."
+                   placeholder="Geben Sie Ihren Vornamen an."
                    required="true">
         </div>
         <!-- nachname -->
         <div class="form-group">
-            <label for="lastname">lastname *</label>
-            <input type="text" name="lastname" class="form-control" id="lastname"
-
-                   placeholder="Enter your last name."
-                   maxlength="30"
-                   required="true">
+            <label for="content">text *</label>
+            <textarea class='form-control' rows='5' name='content' id='content' maxlength='2000' placeholder="enter your description here"><?=$text?></textarea>
         </div>
+
         <!-- benutzername -->
         <div class="form-group">
-            <label for="username">username *</label>
-            <input type="text" name="username" class="form-control" id="username"
-
-                   placeholder="Upper- and lower case letters, min 6 characters."
-                   maxlength="30" required="true"
-                   pattern="(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}"
-                   title="Upper- and lower case letters, min 6 characters.">
+            <label for="date"> date *</label>
+            <input type="date" name="date" class="form-control" id="date" value="<?=$datefinsh?>""required>
         </div>
+
         <!-- password -->
         <div class="form-group">
-            <label for="password">password *</label>
-            <input type="password" name="password" class="form-control" id="password"
-                   placeholder="Upper and lower case letters, numbers, special characters, at least 8 characters"
-                   pattern="(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
-                   title="At least one uppercase and one lowercase letter, one number and one special character, at least 8 characters long."
+            <label for="firstname">progress *</label>
+            <input type="number" name="progress" class="form-control" id="progress"
+                   min="0"
+                   max="100"
+                   value="<?=$progress?>"
+
+                   placeholder="progress"
                    required="true">
         </div>
+
+        <div class="form-group">
+            <label for="firstname">priority *</label>
+            <input type="number" name="priority" class="form-control" id="priority"
+                   min="0"
+                   max="5"
+                   value="<?=$priorety?>"
+                   placeholder="priority"
+                   required="true">
+        </div>
+
+
+
+
+
+
         <div class="form-group">
             <label>Choose a categorie:</label>
             <div class="multi-selector">
@@ -132,6 +145,7 @@ if (isset($_GET["userid"])){
                               </label>";
                     }
                     ?>
+
                 </div>
             </div>
         </div>
@@ -142,9 +156,9 @@ if (isset($_GET["userid"])){
     </form>
 </div>
 
+
+
 <script src="../../js/scripts.js"></script>
-
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
