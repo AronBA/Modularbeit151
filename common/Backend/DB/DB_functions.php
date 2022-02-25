@@ -1,7 +1,7 @@
 <?php
-include_once "DB_connection.php";
+require_once "DB_connection.php";
 
-#returns an array of all categories
+#gibt alle Kategorien zurück
 function getcategroies(){
     $mysqli = connection();
     if ($mysqli->connect_error) {
@@ -26,7 +26,7 @@ function getcategroies(){
 }
 
 
-#returns the users id
+#gibt die user id des user zurück
 function getuserid($uname){
     $mysqli = connection();
     $query = 'SELECT id from user  where username = ?';
@@ -58,7 +58,7 @@ function getcategorieid($cname){
     return null;
 }
 
-#returns an array of all the users categories
+#gibt alle kategorien des users zurück
 function getusercategories($uid){
     $mysqli = connection();
     $query = 'SELECT * from user_has_categories left join categories c on c.id = user_has_categories.categories_id where user_id = ?';
@@ -80,7 +80,7 @@ function getusercategories($uid){
     return null;
 }
 
-#this function echos all users which are found formatted as a table entry
+#funkion welche alle gesuchten User als tablle zurückgibt
 function displaysearcheduser($uname){
     $likename = "%$uname%";
     $mysqli = connection();
@@ -123,7 +123,7 @@ function displaysearcheduser($uname){
     mysqli_close($mysqli);
 }
 
-#this function echos all users formatted as a table entry
+#funkion welche alle  User als tablle zurückgibt
 function displayuser(){
     $mysqli = connection();
     $query = 'SELECT * from user where admin = 0';
@@ -161,10 +161,11 @@ function displayuser(){
     mysqli_close($mysqli);
 }
 
+#funkion welche alle  todos als tablle zurückgibt
 function displaytodo($user){
 
     $uid = getuserid($user);
-    $query = 'SELECT t.id, t.name as todoname, t.text, t.datebegin, t.datefinish, t.progress, t.priorety, u.username, t.user_id, c.name, t.archive from todo as t join user as u on u.ID = t.user_id join categories as c on categories_id = t.categories_id join user_has_categories uhc on c.id = uhc.categories_id where uhc.user_id = ? and archive = 0 order by t.priorety desc';
+    $query = 'SELECT t.id, t.name as todoname, t.text, t.datebegin, t.datefinish, t.progress, t.priorety, u.username, t.user_id, c.name as categorie, t.archive from todo as t join user as u on u.ID = t.user_id join categories as c on categories_id = t.categories_id join user_has_categories uhc on c.id = uhc.categories_id where uhc.user_id = ? and archive = 0 order by t.priorety desc';
 
     $mysqli = connection();
     $stmt = $mysqli->prepare($query);
@@ -182,11 +183,10 @@ function displaytodo($user){
             $datefinish = $row["datefinish"];
             $progress = $row["progress"];
             $username = $row["username"];
-            $categorie = $row["name"];
-
-
-
+            $categorie = $row["categorie"];
             $timeleft = calculateTime($datefinish,$datebegin);
+
+            #wenn der ersteller eingloggt ist kann er bearbeiten, anstonsten nicht
             if ($username == $_SESSION["username"]){
                 echo "
 
@@ -255,11 +255,11 @@ function displaytodo($user){
     mysqli_close($mysqli);
 }
 
-
+//funktion welche alle gesuchten todos als tabble ausgibt
 function displaysearchedtodo($user, $todoname){
     $likename = "%$todoname%";
     $uid = getuserid($user);
-    $query = 'SELECT t.id, t.name as todoname, t.text, t.datebegin, t.datefinish, t.progress, t.priorety, u.username, t.user_id, c.name,c.id , t.archive from todo as t join user as u on u.ID = t.user_id join categories as c on categories_id = t.categories_id join user_has_categories uhc on c.id = uhc.categories_id where uhc.user_id = ? and t.name like ? order by t.priorety desc';
+    $query = 'SELECT t.id, t.name as todoname, t.text, t.datebegin, t.datefinish, t.progress, t.priorety, u.username, t.user_id, c.name as categorie,c.id , t.archive from todo as t join user as u on u.ID = t.user_id join categories as c on categories_id = t.categories_id join user_has_categories uhc on c.id = uhc.categories_id where uhc.user_id = ? and t.name like ? order by t.priorety desc';
 
     $mysqli = connection();
     $stmt = $mysqli->prepare($query);
@@ -277,11 +277,10 @@ function displaysearchedtodo($user, $todoname){
             $datefinish = $row["datefinish"];
             $progress = $row["progress"];
             $username = $row["username"];
-            $categorie = $row["name"];
-
-
-
+            $categorie = $row["categorie"];
             $timeleft = calculateTime($datefinish,$datebegin);
+
+            //nur wenn der ersteller eingeloggt ist kann er es bearbeiten
             if ($username == $_SESSION["username"]){
                 echo "
 
@@ -351,6 +350,7 @@ function displaysearchedtodo($user, $todoname){
     mysqli_close($mysqli);
 }
 
+//funktion welche alle kategorien als tablle ausgibt
 function displaycategories(){
     $mysqli = connection();
     $query = 'SELECT * from categories ';
@@ -381,6 +381,7 @@ function displaycategories(){
     mysqli_close($mysqli);
 }
 
+//funktion welche alle gesuchten kategorien als tabelle zurückgibt
 function displaysearchedcategorie($search){
     $likename = "%$search%";
     $query = 'SELECT * from categories where name like ?';
@@ -415,6 +416,7 @@ function displaysearchedcategorie($search){
     mysqli_close($mysqli);
 }
 
+//funktoin welche diffrenz zwischen zwei daten ausrechnet
 function calculateTime($date1, $date2){
 
     $datetime1 = date_create($date1);

@@ -1,11 +1,9 @@
 <?php
 
 require_once "DB_connection.php";
-include "DB_functions.php";
+require_once "DB_functions.php";
 
-
-
-
+//funktion zum updaten der categorie
 function updatecategories($tid){
 
     $categories = getcategroies();;
@@ -23,7 +21,6 @@ function updatecategories($tid){
 }
 
 $error = $message =  '';
-$firstname = $lastname = $admin = $username = '';
 
 
 // Wurden Daten mit "POST" gesendet?
@@ -34,36 +31,28 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
     echo "</pre>";
 
     if (isset($_POST['id']) && !empty(trim($_POST['id']))) {
-        // Spezielle Zeichen Escapen > Script Injection verhindern
         $tid = $_POST["id"];
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
     }
-
-
-
-
         if (isset($_POST['titel']) && !empty(trim($_POST['titel'])) && strlen(trim($_POST['titel'])) < 45) {
             $title = htmlspecialchars(trim($_POST['titel']));
 
-        }
+        } else {echo "please us a valid titel";}
 
         if (strlen(trim($_POST['content'])) < 2000) {
             $text = $_POST["content"];
-        }
+        } else {echo "please us a valid content";}
 
         if (isset($_POST['priority']) && !empty(trim($_POST['priority']))) {
             $priority = $_POST['priority'];
-        }
+        } else {echo "please us a valid priority";}
 
         if (isset($_POST['date']) && !empty(trim($_POST['date']))) {
             $datefinsh = $_POST['date'];
-        }
+        } else {echo "please us a valid date";}
 
         if (isset($_POST['progress']) && !empty(trim($_POST['progress'])) && strlen(trim($_POST['progress'])) < 3 && trim($_POST['progress']) < 100 && preg_match("/[0-9]/", trim($_POST['progress']))) {
             $progress = $_POST["progress"];
-        }
+        } else {echo "please us a valid progress";}
 
         // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
         if (empty($error)) {

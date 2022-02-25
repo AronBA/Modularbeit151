@@ -1,7 +1,7 @@
 <?php
 
 require_once "DB_connection.php";
-include "DB_functions.php";
+require_once "DB_functions.php";
 
 
 
@@ -21,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $name = htmlspecialchars(trim($_POST['name']));
     } else {
         // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
+        $error .= 'Please use a valid name.<br />';
     }
 
 
@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
 
         $mysqli = connection();
-        //firstname, lastname, username, password, email
+
         $query = "Insert into categories (name) values (?)";
         // query vorbereiten
         $stmt = $mysqli->prepare($query);

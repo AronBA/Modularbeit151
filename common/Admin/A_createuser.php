@@ -106,6 +106,7 @@ require_once "../Backend/DB/DB_functions.php";
                 <!---------List of checkboxes and options----------->
                 <div class="list">
                     <?php
+                    //loopt durch alle categorien und passt somit das Form an die anzhal der Kategorien an
                     $categories = getcategroies();
                     for ($i = 0; $i < sizeof($categories);$i++) {
                         $category = $categories[$i];

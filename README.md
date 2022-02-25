@@ -12,6 +12,9 @@ Only the creator of a ToDO can edit it.
 
 ## Config
 
+#### Database
+The database backup is located in the db folder.
+
 #### Admin Login
 Username: AronderAdmin <br>
 Password: Adminpasswort123$
@@ -39,9 +42,7 @@ GRANT ALL PRIVILEGES ON db_m151_modularbeit TO 'db_admin'@'localhost';
 FLUSH PRIVILEGES;
 
 ```
-### Database
-ERM of the Database if you want to recreate the Database
-![img_1.png](img/github/databaseerm.png)
+
 
 
 

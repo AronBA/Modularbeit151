@@ -5,6 +5,8 @@ $mysqli = connection();
 $error = '';
 $message = '';
 
+
+// validierung des Loginprozesses
 if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error)){
 
     if(!empty(trim($_POST['username']))){
@@ -48,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error)){
             $row = $result->fetch_assoc();
 
             if(password_verify($password, $row["password"]))
-
+//setzen der session
                 $message .= "Sie sind nun eingeloggt";
                 $_SESSION['login'] = true;
                 $_SESSION['username'] = $row["username"];

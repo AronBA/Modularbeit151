@@ -61,7 +61,7 @@ require_once "../Backend/B_session.php";
         <tbody>
         <?php
         require_once "../Backend/DB/DB_functions.php";
-
+// Zeigt alle Kategorien an oder die welche gesuchte werden
         if (isset($_POST["searchsub"])){
             displaysearchedcategorie($_POST["search"]);
             exit();

@@ -111,6 +111,7 @@ require_once "../Backend/DB/DB_functions.php";
                 <!---------List of checkboxes and options----------->
                 <div class="list">
                     <?php
+                    //form anpussung an die anzahl categorien
                     $categories = getcategroies();
                     for ($i = 0; $i < sizeof($categories);$i++) {
                         $category = $categories[$i];

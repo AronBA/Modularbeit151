@@ -66,7 +66,7 @@ require_once "../Backend/B_session.php";
     <tbody>
     <?php
     require_once "../Backend/DB/DB_functions.php";
-
+//Zeigt alle user an oder die die gesucht werden
     if (isset($_POST["searchsub"])){
         displaysearcheduser($_POST["search"]);
         exit();

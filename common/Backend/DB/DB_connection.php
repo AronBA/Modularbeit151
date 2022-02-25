@@ -1,6 +1,6 @@
 <?php
-include "DB_config.php";
-
+require_once "DB_config.php";
+//function welche eine mysqli connection zurück gibt
 function connection(){
     $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 

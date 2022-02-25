@@ -79,7 +79,7 @@ CREATE TABLE `todo` (
 
 LOCK TABLES `todo` WRITE;
 /*!40000 ALTER TABLE `todo` DISABLE KEYS */;
-INSERT INTO `todo` VALUES (1,'Schlage Menschen','Schlage 100 Menschen','2022-02-10','2022-02-26',100,3,'\0',1,1),(2,'Esse Pizza','Essen mindestens 100 Pizza','2022-02-09','2022-02-27',34,5,'\0',2,2);
+INSERT INTO `todo` VALUES (1,'homework','do your homework','2022-02-10','2022-02-26',100,3,'\0',1,1),(2,'Esse Pizza','Essen mindestens 100 Pizza','2022-02-09','2022-02-27',34,5,'\0',2,2);
 /*!40000 ALTER TABLE `todo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,7 +107,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Aron','Baur','$2a$12$ZSU9OT1MkD.2xtjpIXEulOtLOrRKOuL.w73hSsboimRhhzmKd2DE.','','AronderAdmin'),(2,'Aron','Baur','$2a$12$ZSU9OT1MkD.2xtjpIXEulOtLOrRKOuL.w73hSsboimRhhzmKd2DE.','\0','AronderUser');
+INSERT INTO `user` VALUES (1,'Aron','Baur','$2a$12$ZSU9OT1MkD.2xtjpIXEulOtLOrRKOuL.w73hSsboimRhhzmKd2DE.','','AronderAdmin');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 

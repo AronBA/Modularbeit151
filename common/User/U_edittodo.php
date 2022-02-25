@@ -136,6 +136,7 @@ if (isset($_GET["edittodo"])){
                 <!---------List of checkboxes and options----------->
                 <div class="list">
                     <?php
+                    //formanpassung an die categorien
                     $categories = getcategroies();
                     for ($i = 0; $i < sizeof($categories);$i++) {
                         $category = $categories[$i];

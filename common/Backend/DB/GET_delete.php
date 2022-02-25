@@ -2,6 +2,8 @@
 require_once "DB_connection.php";
 $mysqli = connection();
 
+
+//löscht den user und rederected den user wieder
 if (isset($_GET["deleteuser"])){
     $id = $_GET["deleteuser"];
     $query = 'DELETE FROM user WHERE id = ?';
@@ -13,7 +15,7 @@ if (isset($_GET["deleteuser"])){
 
 }
 
-
+//löscht das to do und rederected den user wieder
 if (isset($_GET["deletetodo"])){
     $id = $_GET["deletetodo"];
     $query = 'DELETE FROM todo WHERE id = ?';
@@ -24,7 +26,7 @@ if (isset($_GET["deletetodo"])){
     mysqli_close($mysqli);
 
 }
-
+//archiviert das todo
 if (isset($_GET["archivetodo"])){
     $id = $_GET["archivetodo"];
     $query = 'UPDATE todo SET archive = 1 where id = ?';
@@ -35,6 +37,7 @@ if (isset($_GET["archivetodo"])){
     mysqli_close($mysqli);
 
 }
+//löscht die kategorie
 if (isset($_GET["deletecategorie"])){
     $id = $_GET["deletecategorie"];
     $query = 'DELETE FROM categories WHERE id = ?';

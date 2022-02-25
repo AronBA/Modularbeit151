@@ -1,9 +1,11 @@
 <?php
 
 require_once "DB_connection.php";
-include "DB_functions.php";
-include "../B_session.php";
+require_once "DB_functions.php";
+require_once "../B_session.php";
 
+
+//funktion welche die id der geposteten categorie zurück gibt
 function categories(){
     $categories = getcategroies();;
     for ($i = 0; $i < sizeof($categories); $i++) {
@@ -17,41 +19,38 @@ function categories(){
 
 
 $error = $message =  '';
-$firstname = $lastname = $admin = $username = '';
 
 // Wurden Daten mit "POST" gesendet?
 if($_SERVER['REQUEST_METHOD'] == "POST") {
 
     $user = $_SESSION["username"];
     $uid = getuserid($user);
-
+//aktuelle datum wird gesetzt
     $curentdate = date("Y-m-d");
 
     if (isset($_POST['titel'])) {
-        $todoError['error'] = "";
         if (isset($_POST['titel']) && !empty(trim($_POST['titel'])) && strlen(trim($_POST['titel'])) < 45) {
             $titel = htmlspecialchars(trim($_POST['titel']));
 
-        }
+        } else { echo "please use a valid titel";}
 
         if (strlen(trim($_POST['content'])) < 2000) {
             $content = $_POST["content"];
-        }
+        } { echo "please use a valid content";}
 
         if (isset($_POST['priority']) && !empty(trim($_POST['priority']))) {
             $priority = $_POST['priority'];
-        }
+        } { echo "please use a valid priorety";}
 
         if (isset($_POST['date']) && !empty(trim($_POST['date']))) {
             $date = $_POST['date'];
-        }
+        } { echo "please use a valid date";}
 
         if (isset($_POST['progress']) && !empty(trim($_POST['progress'])) && strlen(trim($_POST['progress'])) < 3 && trim($_POST['progress']) < 100 && preg_match("/[0-9]/", trim($_POST['progress']))) {
             $progess = $_POST["progress"];
-        }
+        } { echo "please use a valid progess amount";}
 
         $mysqli = connection();
-        //firstname, lastname, username, password, email
         $query = "Insert into todo (name, text, datebegin, datefinish, priorety,progress,categories_id,user_id) values (?,?,?,?,?,?,?,?)";
         // query vorbereiten
         $stmt = $mysqli->prepare($query);

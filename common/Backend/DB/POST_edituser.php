@@ -3,9 +3,7 @@
 require_once "DB_connection.php";
 include "DB_functions.php";
 
-
-
-
+//funktion zum updaten der categorien
 function updatecategories($uid){
     $mysqli = connection();
     $query = "DELETE FROM user_has_categories WHERE user_id = ?";
@@ -28,7 +26,7 @@ function updatecategories($uid){
 }
 
 $error = $message =  '';
-$firstname = $lastname = $admin = $username = '';
+
 
 
 // Wurden Daten mit "POST" gesendet?
@@ -39,11 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     echo "</pre>";
 
     if(isset($_POST['id']) && !empty(trim($_POST['id']))){
-        // Spezielle Zeichen Escapen > Script Injection verhindern
         $uid = $_POST["id"];
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
     }
 
 
@@ -52,18 +46,13 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     if(isset($_POST['firstname']) && !empty(trim($_POST['firstname'])) && strlen(trim($_POST['firstname'])) <= 30){
         // Spezielle Zeichen Escapen > Script Injection verhindern
         $firstname = htmlspecialchars(trim($_POST['firstname']));
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Vornamen ein.<br />";
-    }
+    } else {echo "please us a valid firstname";}
 
     // nachname vorhanden, mindestens 1 Zeichen und maximal 30 zeichen lang
     if(isset($_POST['lastname']) && !empty(trim($_POST['lastname'])) && strlen(trim($_POST['lastname'])) <= 30){
         // Spezielle Zeichen Escapen > Script Injection verhindern
         $lastname = htmlspecialchars(trim($_POST['lastname']));
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
+    } else {echo "please us a valid lastname";}
     }
 
     // benutzername vorhanden, mindestens 6 Zeichen und maximal 30 zeichen lang
@@ -71,12 +60,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         $username = trim($_POST['username']);
         // entspricht der benutzername unseren vogaben (minimal 6 Zeichen, Gross- und Kleinbuchstaben)
         if(!preg_match("/(?=.*[a-z])(?=.*[A-Z])[a-zA-Z]{6,}/", $username)){
-            $error .= "Der Benutzername entspricht nicht dem geforderten Format.<br />";
+            echo "please us a valid username";
         }
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Benutzernamen ein.<br />";
-    }
+    } else {echo "please us a valid username";}
 
 
     // passwort vorhanden, mindestens 8 Zeichen
@@ -86,12 +72,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
         //entspricht das passwort unseren vorgaben? (minimal 8 Zeichen, Zahlen, Buchstaben, keine Zeilenumbrüche, mindestens ein Gross- und ein Kleinbuchstabe)
         if(!preg_match("/(?=^.{8,}$)((?=.*\d+)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/", $password)){
-            $error .= "Das Passwort entspricht nicht dem geforderten Format.<br />";
+            echo "please us a valid password";
         }
-    } else {
-        // Ausgabe Fehlermeldung
-        $error .= "Geben Sie bitte einen korrekten Nachnamen ein.<br />";
-    }
+    } else {echo "please us a valid password";}
 
     // wenn kein Fehler vorhanden ist, schreiben der Daten in die Datenbank
     if(empty($error)){
@@ -120,15 +103,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
             updatecategories($uid);
 
-
-
-
             // weiterleiten auf login formular
             header('Location: ../../Admin/A_home.php');
 
         }
 
-    }
 }
 
 ?>
