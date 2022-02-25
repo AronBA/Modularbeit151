@@ -76,7 +76,8 @@ if (isset($_GET["edittodo"])){
 </nav>
 <div class="well text-center"><h1>you are editing <?=$title?></h1></div>
 <div class="container">
-    <form action="../Backend/DB/POST_createtodo.php" method="post">
+    <form action="../Backend/DB/POST_edittodo.php" method="post">
+        <input type="hidden" name='id' value="<?=$id?>" size="0" hidden>
         <!-- vorname -->
         <div class="form-group">
             <label for="firstname">titel *</label>

@@ -41,7 +41,7 @@ require_once "../Backend/B_session.php";
                 </form>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#"><?php echo "Willkommen ". $_SESSION["firstname"]." ". $_SESSION["lastname"]?></a></li>
+                <li><a href="#"><?php echo "Hello ". $_SESSION["firstname"]." ". $_SESSION["lastname"]?></a></li>
                 <li><a href="../Backend/B_logout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
