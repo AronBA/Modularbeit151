@@ -1,6 +1,8 @@
 # Just do nothing
 is a very boring and not very Unique WebApp.
 
+![img_2.png](img/github/img.png)
+
 
 ## About
 This is a boring WebApp. You have to Log in to use the App. There are two types of Users.
